@@ -1,4 +1,4 @@
-r;; misc-packages.el --- various customizations and additions of packages  ;; -*- lexical-binding: t; -*-
+;; misc-packages.el --- various customizations and additions of packages  ;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;;; This is for packages that _aren't_ built-in to Emacs but aren't

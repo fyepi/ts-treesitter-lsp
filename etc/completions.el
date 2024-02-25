@@ -258,7 +258,7 @@
   (vertico-multiform-mode))
 
 (use-package vertico-reverse
-  :after (vertico))
+  e  :after (vertico))
 
 
 ;; Enable rich annotations using the Marginalia package
