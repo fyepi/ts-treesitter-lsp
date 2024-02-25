@@ -39,17 +39,23 @@
 
 ;;; DEFAULT FACE
 ;;;; If you don't set this early on, sometimes things get wonky.
-(if (eq system-type 'darwin)
-    (set-face-attribute 'default t
-                        :background "#000000"
-                        :foreground "#ffffff"
-                        :family "FiraCode Nerd Font Mono"
-                        :height 180)
-  (set-face-attribute 'default t
-                      :background "#000000"
-                      :foreground "#ffffff"
-                      :family "Mono"
-                      :height 161))
+(set-face-attribute 'default nil 
+		    :font "JetBrainsMono Nerd Font"
+		    :height 130
+		    :weight 'regular)
+(set-face-attribute 'fixed-pitch nil
+		    :font "JetBrainsMono Nerd Font"
+		    :height 130
+		    :weight 'regular)
+;; Makes commented text and keywords italics.
+;; This is working in emacsclient but not emacs.
+;; Your font must have an italic face available.
+(set-face-attribute 'font-lock-comment-face nil
+		    :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil
+		    :slant 'italic)
+
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font-14"))
 
 (set-face-attribute 'mode-line nil :height 200 :family "FiraCode Nerd Font Mono")
 
@@ -153,7 +159,14 @@
 (defvar os/module-list
   '(
     "builtins"
-    )
+    "init"
+    "completion"
+    "keys"
+    "linters"
+    "misc-functions"
+    "misc-highlights"
+    "misc-packages"
+    "themes")
   "List of modules to load on startup.")
 
 (dolist (pkg os/module-list)

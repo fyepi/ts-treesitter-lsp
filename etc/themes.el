@@ -1,0 +1,23 @@
+;; themes.el --- theme stuff  ;; -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;;;; Theme-related customization
+
+;;; Code:
+(use-package solarized-theme
+  :ensure solarized-theme)
+
+(defun os/solarize-this ()
+  "Enable solarized-dark theme."
+  (interactive)
+  (load-theme 'solarized-dark t))
+
+(defun os/solarize-this-light ()
+  "Enable solarized-light theme."
+  (interactive)
+  (load-theme 'solarized-light t))
+
+(os/solarize-this)
+
+(provide 'themes)
+;;; themes.el ends here
