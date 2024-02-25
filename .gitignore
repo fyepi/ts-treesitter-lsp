@@ -19,3 +19,15 @@ transient/history.el
 tree-sitter
 url
 var/pcache
+local
+.local
+autosave
+backup
+bookmarks
+eshell
+ido.last
+*~
+init_backup.el
+nov-places
+projects
+straight/
