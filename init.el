@@ -11,7 +11,7 @@
 ;;; VARIABLES
 ;;;; if you're not me, you probably want to change this to point to
 ;;;; where you put your checkout of the github repo:
-(defvar os/emacs-dir (expand-file-name "~/workspace/emacs/")
+(defvar os/emacs-dir (expand-file-name "~/.emacs.d/")
   "Directory containing working copy of Emacs config repo.")
 
 (defvar os/emacs-config-dir (concat os/emacs-dir "etc/")
@@ -76,7 +76,7 @@
 ;;;; your own. This is a place to put variables that set passwords,
 ;;;; email addresses, and other stuff that you don't want in a public
 ;;;; github repo...
-(defvar os/private-config-file "~/private/emacs-private.el"
+(defvar os/private-config-file "~/.emacs.d/emacs-private.el"
   "File with configuration info that can't be in public repository.")
 (if (file-readable-p os/private-config-file)
     (progn
@@ -158,7 +158,7 @@
   '(
     "builtins"
     "init"
-    "completion"
+    "completions"
     "keys"
     "linters"
     "misc-functions"

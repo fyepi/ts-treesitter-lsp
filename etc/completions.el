@@ -1,4 +1,4 @@
-;; completion.el --- auto-complete related config  ;; -*- lexical-binding: t; -*-
+;; completions.el --- auto-complete related config  ;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;;; Packages and functions related to completion, both in buffers and
@@ -258,7 +258,7 @@
   (vertico-multiform-mode))
 
 (use-package vertico-reverse
-  e  :after (vertico))
+  :after (vertico))
 
 
 ;; Enable rich annotations using the Marginalia package
@@ -279,5 +279,5 @@
 
 
 
-(provide 'completion)
+(provide 'completions)
 ;;; completion.el ends here
