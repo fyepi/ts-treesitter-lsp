@@ -56,7 +56,9 @@
   :after (flymake)
   :hook
   (js2-mode . flymake-eslint-enable) ;; todo ensure this is triggered in ts & tsx
-  (web-mode . flymake-eslint-enable))
+  (web-mode . flymake-eslint-enable)
+  (typescript-ts-mode . flymake-eslint-enable)
+  (tsx-ts-mode .flymake-eslint-enable))
 
 (use-package flymake-json
   :ensure flymake-json

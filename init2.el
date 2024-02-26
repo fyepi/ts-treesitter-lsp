@@ -5,9 +5,9 @@
       (bootstrap-version 6))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
-	(url-retrieve-synchronously
-	 "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-	 'silent 'inhibit-cookies)
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -29,7 +29,7 @@
 (use-package org-modern)
 (use-package org-vcard
   :straight t)
-;(with-eval-after-load 'org (global-org-modern-mode))
+                                        ;(with-eval-after-load 'org (global-org-modern-mode))
 
 (use-package org-tempo
   :straight nil)
@@ -43,7 +43,7 @@
 
 (use-package rainbow-delimiters
   :hook ((org-mode . rainbow-delimiters-mode)
-	 (prog-mode . rainbow-delimiters-mode)))
+         (prog-mode . rainbow-delimiters-mode)))
 
 (use-package hl-todo
   :hook ((org-mode . hl-todo-mode)
@@ -64,27 +64,27 @@
 
 (use-package which-key
   :straight t
-  :init 
+  :init
   (which-key-mode 1)
   :config
   (setq which-key-side-window-location 'bottom
-	which-key-sort-order #'which-key-key-order
-	which-key-allow-imprecise-window-fit nil
-	which-key-sort-uppercase-first nil
-	which-key-add-column-padding 1
-	which-key-max-display-columns nil
-	which-key-min-display-lines 6
-	which-key-side-window-slot -10
-	which-key-side-window-max-height 0.25
-	which-key-idle-delay 0.8
-	which-key-max-description-length 25
-	which-key-allow-imprecise-window-fit nil
-	which-key-separator " → " ))
+        which-key-sort-order #'which-key-key-order
+        which-key-allow-imprecise-window-fit nil
+        which-key-sort-uppercase-first nil
+        which-key-add-column-padding 1
+        which-key-max-display-columns nil
+        which-key-min-display-lines 6
+        which-key-side-window-slot -10
+        which-key-side-window-max-height 0.25
+        which-key-idle-delay 0.8
+        which-key-max-description-length 25
+        which-key-allow-imprecise-window-fit nil
+        which-key-separator " → " ))
 
 (use-package vterm
   :config
   (setq shell-file-name "/bin/zsh"
-	vterm-max-scrollback 5000))
+        vterm-max-scrollback 5000))
 
 (use-package vterm-toggle
   :after vterm
@@ -106,8 +106,8 @@
                  (window-height . 0.3))))
 (global-set-key (kbd "M-n") 'vterm-toggle)
 (add-hook 'vterm-mode
-	  (lambda ()
-	    (local-set-key (kbd "M-n") 'vterm -toggle)))
+          (lambda ()
+            (local-set-key (kbd "M-n") 'vterm -toggle)))
 
 (use-package all-the-icons
   :if (display-graphic-p))
@@ -116,8 +116,8 @@
   :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
 
 (add-hook 'dired-mode
-	  (lambda ()
-	    (local-set-key [_] 'dired-up-directory)))
+          (lambda ()
+            (local-set-key [_] 'dired-up-directory)))
 
 (use-package org-auto-tangle
   :defer t
@@ -200,9 +200,9 @@
 (use-package consult-dir
   :straight t
   :bind (("C-x C-d" . consult-dir)
-	 :map vertico-map
-	 ("C-x C-d" . consult-dir)
-	 ("C-x C-j" . consult.dir-jump-file)))
+         :map vertico-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult.dir-jump-file)))
 
 (use-package perspective
   :bind
@@ -289,12 +289,12 @@
 (setq org-goto-interface "outline-path-completion")
 
 (custom-set-faces
-  '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
-  '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
-  '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
-  '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
-  '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
-)
+ '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
+ '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
+ '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+ )
 
 (setq org-directory "~/org/"
       org-agenda-files '("~/org/todo.org")
@@ -371,7 +371,7 @@
          "\n* %<%I:%M %p> - %^{Title} \n\n%?\n\n"
          :tree-type week
          :clock-in :clock-resume
-	 :prepend t
+         :prepend t
          :empty-lines 1)
         ("jt" "Task Entry" entry
          (file+olp+datetree ,(os/org-path "Journal.org"))
@@ -384,7 +384,7 @@
          "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
          :tree-type week
          :clock-in :clock-resume
-         :empty-lines 1)))    
+         :empty-lines 1)))
 
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
@@ -412,21 +412,21 @@
 (electric-indent-mode -1)
 (setq org-edit-src-content-indentation 0)
 
-(set-face-attribute 'default nil 
-		    :font "JetBrainsMono Nerd Font"
-		    :height 130
-		    :weight 'regular)
+(set-face-attribute 'default nil
+                    :font "JetBrainsMono Nerd Font"
+                    :height 130
+                    :weight 'regular)
 (set-face-attribute 'fixed-pitch nil
-		    :font "JetBrainsMono Nerd Font"
-		    :height 130
-		    :weight 'regular)
+                    :font "JetBrainsMono Nerd Font"
+                    :height 130
+                    :weight 'regular)
 ;; Makes commented text and keywords italics.
 ;; This is working in emacsclient but not emacs.
 ;; Your font must have an italic face available.
 (set-face-attribute 'font-lock-comment-face nil
-		    :slant 'italic)
+                    :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil
-		    :slant 'italic)
+                    :slant 'italic)
 
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font-14"))
 
