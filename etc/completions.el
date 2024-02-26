@@ -157,16 +157,12 @@
   :defines
   marginalia-align
   marginalia-command-categories
-  marginalia-max-relative-age
   :bind
   (:map minibuffer-local-map ("M-A" . marginalia-cycle))
   :init
   (marginalia-mode)
-  :custom
-  (marginalia-align 'right)
-  (marginalia-max-relative-age 0)
   :config
-  (add-to-list 'marginalia-command-categories '(genehack/find-file . file))
+  (add-to-list 'marginalia-command-categories '(os/find-file . file))
   (add-to-list 'marginalia-command-categories '(projectile-find-file . file)))
 
 ;;; ORDERLESS
@@ -198,10 +194,6 @@
   :config
   (global-smart-tab-mode 1))
 
-(use-package doom-modeline
-  :ensure t
-  :config
-  (doom-modeline-mode t))
 
 ;;; VERTICO
 (use-package vertico
@@ -215,68 +207,11 @@
         ("<escape>" . minibuffer-keyboard-quit)
         ("<tab>"    . vertico-insert))
   :custom
-  (vertico-count 10)  ; Number of candidates to display
-  (vertico-cycle nil) ; Go from last to first candidate and first to last (cycle)?
-  (vertico-multiform-categories
-   '((file reverse)
-     (imenu buffer)
-     (t reverse)))
-  (vertico-multiform-commands
-   '((consult-line buffer)
-     (consult-imenu reverse buffer)
-     (consult-ripgrep reverse buffer)
-     (execute-extended-command reverse)
-     (genehack/find-file reverse)))
+  (vertico-count 20)  ; Number of candidates to display
+  (vertico-cycle t) ; Go from last to first candidate and first to last (cycle)?
   (vertico-resize t)
   :init
   (vertico-mode))
-
-(use-package vertico-buffer
-  :after (vertico)
-  :custom
-  (vertico-buffer-display-action
-   '(display-buffer-in-direction (direction . right) (window-height . 0.3))))
-
-(use-package vertico-directory
-  :after (vertico)
-  :hook
-  ;; Correct file path when changed
-  (rfn-eshadow-update-overlay . vertico-directory-tidy))
-
-(use-package vertico-mouse
-  :after (vertico)
-  :functions
-  vertico-mouse-mode
-  :init
-  (vertico-mouse-mode))
-
-(use-package vertico-multiform
-  :after (vertico)
-  :functions
-  vertico-multiform-mode
-  :init
-  (vertico-multiform-mode))
-
-(use-package vertico-reverse
-  :after (vertico))
-
-
-;; Enable rich annotations using the Marginalia package
-(use-package marginalia
-  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
-  ;; available in the *Completions* buffer, add it to the
-  ;; `completionustst-mode-map'.
-  :bind (:map minibuffer-local-map
-              ("M-A" . marginalia-cycle))
-
-  ;; The :init section is always executed.
-  :init
-
-  ;; Marginalia must be actived in the :init section of use-package such that
-  ;; the mode gets enabled right away. Note that this forces loading the
-  ;; package.
-  (marginalia-mode))
-
 
 
 (provide 'completions)

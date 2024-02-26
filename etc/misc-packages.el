@@ -603,15 +603,16 @@
   (global-treesit-auto-mode))
 
 ;; this fixes a problem where v0.20.4 of this grammar blows up with emacs
-(defvar os/tsx-treesit-auto-recipe (make-treesit-auto-recipe
-                                    :lang 'tsx
-                                    :ts-mode 'tsx-ts-mode
-                                    :remap '(typescript-tsx-mode)
-                                    :requires 'typescript
-                                    :url "https://github.com/tree-sitter/tree-sitter-typescript"
-                                    :revision "v0.20.3"
-                                    :source-dir "tsx/src"
-                                    :ext "\\.tsx\\'")
+(defvar os/tsx-treesit-auto-recipe
+  (make-treesit-auto-recipe
+   :lang 'tsx
+   :ts-mode 'tsx-ts-mode
+   :remap '(typescript-tsx-mode)
+   :requires 'typescript
+   :url "https://github.com/tree-sitter/tree-sitter-typescript"
+   :revision "v0.20.3"
+   :source-dir "tsx/src"
+   :ext "\\.tsx\\'")
   "Recipe for `libtree-sitter-tsx.dylib'.")
 (add-to-list 'treesit-auto-recipe-list os/tsx-treesit-auto-recipe)
 (defvar os/typescript-treesit-auto-recipe
@@ -638,7 +639,7 @@
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 (defun os/typescript-ts-mode-setup ()
-  "Set up `typescript-ts-mode' for genehack."
+  "Set up `typescript-ts-mode' for os."
   (set (make-local-variable 'compile-command) "tsc"))
 
 (use-package typescript-ts-mode

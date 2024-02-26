@@ -116,8 +116,7 @@
   dired-jump
   dired-next-line
   :hook
-  ((dired-mode . all-the-icons-dired-mode)
-   (dired-mode . dired-hide-details-mode))
+  ((dired-mode . all-the-icons-dired-mode))
   :bind
   ("C-c d"   . dired-jump)
   ("C-c C-d" . dired-jump)
@@ -308,11 +307,11 @@ Ignores `ARG'."
   (setq org-return-follows-link t)
   (setq org-tag-alist '(("@work" . ?w) ("@home" . ?h) ("@oss" . ?o) ("NEXT" . ?n)))
   (setq org-todo-keywords '((sequence "TODO(t)" "ACTIVE(a)" "|" "DONE(d!)")
-                            (sequence "WAITING(w!/@)" "|")))
-  (defun jfdi ()
-    "JFDI!"
-    (interactive)
-    (find-file "~/org/jfdi.org")))
+                            (sequence "WAITING(w!/@)" "|"))))
+(defun jfdi ()
+  "JFDI!"
+  (interactive)
+  (find-file "~/org/jfdi.org"))
 
 
 ;;; PAREN MATCH

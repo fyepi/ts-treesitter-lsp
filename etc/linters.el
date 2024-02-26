@@ -49,7 +49,7 @@
   :custom
   (flymake-diagnostic-at-point-timer-delay 0.1)
   (flymake-diagnostic-at-point-display-diagnostic-function
-   #'genehack/display-flymake-diagnostic-in-popup-and-minibuffer))
+   #'os/display-flymake-diagnostic-in-popup-and-minibuffer))
 
 (use-package flymake-eslint
   :ensure flymake-eslint
