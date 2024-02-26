@@ -737,5 +737,47 @@
   (add-to-list 'safe-local-variable-values '(yaml-indent-offset . 4)))
 
 
+
+;; https://github.com/clojure-emacs/clojure-mode
+(use-package clojure-mode
+  :ensure clojure-mode)
+
+
+;; extra syntax highlighting for clojure
+(use-package clojure-mode-extra-font-locking
+  :after (clojure-mode)
+  :ensure t)
+
+;;;;
+;; Cider
+;;;;
+
+;; integration with a Clojure REPL
+;; https://github.com/clojure-emacs/cider
+
+(use-package cider
+  :defines
+  nrepl-popup-stacktraces
+  :ensure t)
+
+;; eldoc conflicts with cider?
+;; https://github.com/practicalli/spacemacs-content/issues/287
+;; load before cider?
+;; https://github.com/emacs-lsp/lsp-mode/issues/2445#issuecomment-751481500
+
+;;(setq cider-jdk-src-paths '("/usr/lib/jvm/java-11-openjdk/lib/src.zip"))
+
+(setq nrepl-popup-stacktraces nil)
+
+(defun os/cider-mode-hook ()
+  "Disable LSP completion when cider is started."
+  (eldoc-mode 1))
+
+(defun os/cider-repl-mode-hook ()
+  (eldoc-mode 1))
+
+(add-hook 'cider-mode-hook 'os/cider-mode-hook)
+(add-hook 'cider-repl-mode-hook 'os/cider-repl-mode-hook)
+
 (provide 'misc-packages)
 ;;; misc-packages.el ends here
