@@ -40,11 +40,15 @@
 (set-face-attribute 'default nil
                     :font "JetBrainsMono Nerd Font"
                     :height 130
-                    :weight 'regular)
+                    :weight 'semibold)
 (set-face-attribute 'fixed-pitch nil
                     :font "JetBrainsMono Nerd Font"
                     :height 130
-                    :weight 'regular)
+                    :weight 'semibold)
+(set-face-attribute 'variable-pitch nil
+                    :font "JetBrainsMono Nerd Font"
+                    :height 130
+                    :weight 'semibold)
 ;; Makes commented text and keywords italics.
 ;; This is working in emacsclient but not emacs.
 ;; Your font must have an italic face available.

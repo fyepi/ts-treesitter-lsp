@@ -68,7 +68,6 @@
 ;;; CURSOR
 (setq-default cursor-type 'box)
 
-
 ;;; DEBUGGING
 (setq-default warning-minimum-level :error)
 
@@ -244,7 +243,7 @@ Ignores `ARG'."
 
 ;;; LINE NUMBERS
 (column-number-mode 1)
-
+(global-display-line-numbers-mode 1)
 
 ;;; MAC STUFF
 (when (eq system-type 'darwin)
@@ -280,34 +279,115 @@ Ignores `ARG'."
 
 
 ;;; ORG MODE
-(use-package org
-  :disabled t
-  :commands org-directory
-  :defines
-  org-agenda-custom-commands
-  org-agenda-files
-  org-capture-templates
-  org-default-notes-file
-  org-log-done
-  org-refile-targets
-  org-return-follows-link
-  org-tag-alist
-  org-todo-keywords
-  :config
-  (setq org-agenda-custom-commands
-        '(("a" "active" todo "ACTIVE")
-          ("n" "next actions" tags-todo "NEXT")
-          ("w" "waiting for" todo "WAITING")))
-  (setq org-agenda-files '("~/org" "~/org/home" "~/org/oss" "~/org/work"))
-  (setq org-capture-templates
-        '(("t" "todo" entry (file+headline "" "* INBOX") "** TODO %?\n %i\n %a")))
-  (setq org-default-notes-file (concat org-directory "/jfdi.org"))
-  (setq org-log-done 'time)
-  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 2))))
-  (setq org-return-follows-link t)
-  (setq org-tag-alist '(("@work" . ?w) ("@home" . ?h) ("@oss" . ?o) ("NEXT" . ?n)))
-  (setq org-todo-keywords '((sequence "TODO(t)" "ACTIVE(a)" "|" "DONE(d!)")
-                            (sequence "WAITING(w!/@)" "|"))))
+(defun os/org-path (path)
+  (expand-file-name path org-directory))
+
+
+(add-hook 'org-mode-hook 'org-indent-mode)
+(setq org-goto-interface "outline-path-completion")
+
+(custom-set-faces
+ '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
+ '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
+ '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+ )
+
+(setq org-directory "~/org/"
+      org-agenda-files '("~/org/todo.org")
+      org-default-notes-file (expand-file-name "notes.org" org-directory)
+      org-ellipsis " ▼ "
+      org-log-done 'time
+      org-journal-dir "~/org/journal/"
+      org-journal-date-format "%B %d, %Y (%A) "
+      org-journal-file-format "%Y-%m-%d.org"
+      org-hide-emphasis-markers t)
+(setq org-src-preserve-indentation nil
+      org-src-tab-acts-natively t
+      org-edit-src-content-indentation 0
+      org-src-fontify-natively t
+      org-confirm-babel-evaluate nil)
+
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "READ(r)" "|"  "DONE(d!)")
+        (sequence "|" "WAIT(w)" "BACK(b)")))
+
+(setq org-todo-keyword-faces
+      '(("NEXT" . (:foreground "orange red" :weight bold))
+        ("WAIT" . (:foreground "HotPink2" :weight bold))
+        ("BACK" . (:foreground "MediumPurple3" :weight bold))))
+
+;; Configure common tags
+(setq org-tag-alist
+      '((:startgroup)
+                                        ; Put mutually exclusive tags here
+        (:endgroup)
+        ("@home" . ?H)
+        ("@work" . ?W)
+        ("batch" . ?b)
+        ("followup" . ?f)))
+
+(setq org-agenda-window-setup 'current-window)
+
+;; Make done tasks show up in the agenda log
+(setq org-log-done 'time)
+(setq org-columns-default-format "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
+(setq org-agenda-custom-commands
+      `(("d" "Dashboard"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (tags-todo "+PRIORITY=\"A\""
+                     ((org-agenda-overriding-header "High Priority")))
+          (tags-todo "+followup" ((org-agenda-overriding-header "Needs Follow Up")))
+          (todo "NEXT"
+                ((org-agenda-overriding-header "Next Actions")
+                 (org-agenda-max-todos nil)))
+          (todo "WAIT"
+                ((org-agenda-overriding-header "Waiting for")
+                 (org-agenda-text-search-extra-files nil)))
+          (todo "TODO"
+                ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+                 (org-agenda-text-search-extra-files nil)))))
+
+        ("n" "Next Tasks"
+         ((agenda "" ((org-deadline-warning-days 7)))
+          (todo "NEXT"
+                ((org-agenda-overriding-header "Next Tasks")))))
+
+        ;; Low-effort next actions
+        ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+         ((org-agenda-overriding-header "Low Effort Tasks")
+          (org-agenda-max-todos 20)
+          (org-agenda-files org-agenda-files)))))
+(setq org-capture-templates
+      `(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox")
+         "* TODO %?\n  %U\n  %a\n  %i" :prepend t :empty-lines 1)
+
+        ("j" "Journal Entries")
+        ("je" "General Entry" entry
+         (file+olp+datetree ,(os/org-path "Journal.org"))
+         "\n* %<%I:%M %p> - %^{Title} \n\n%?\n\n"
+         :tree-type week
+         :clock-in :clock-resume
+         :prepend t
+         :empty-lines 1)
+        ("jt" "Task Entry" entry
+         (file+olp+datetree ,(os/org-path "Journal.org"))
+         "\n* %<%I:%M %p> - Task Notes: %a\n\n%?\n\n"
+         :tree-type week
+         :clock-in :clock-resume
+         :empty-lines 1)
+        ("jj" "Journal" entry
+         (file+olp+datetree ,(os/org-path "Journal.org"))
+         "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+         :tree-type week
+         :clock-in :clock-resume
+         :empty-lines 1)))
+
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+
 (defun jfdi ()
   "JFDI!"
   (interactive)

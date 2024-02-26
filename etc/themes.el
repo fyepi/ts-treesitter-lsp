@@ -7,6 +7,9 @@
 (use-package solarized-theme
   :ensure solarized-theme)
 
+(use-package doom-themes
+  :ensure doom-themes)
+
 (defun os/solarize-this ()
   "Enable solarized-dark theme."
   (interactive)

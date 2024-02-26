@@ -15,6 +15,8 @@
 (bind-key  "C-s"         #'isearch-forward)
 
 (bind-key  "M-o"         #'other-window)
+(bind-key  "M-i"         #'imenu)
+
 
 (provide 'keys)
 ;;; keys.el ends here

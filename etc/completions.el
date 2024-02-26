@@ -213,6 +213,26 @@
   :init
   (vertico-mode))
 
+(use-package consult-dir
+  :ensure consult-dir)
+
+(use-package vertico-directory
+  :after vertico
+  :ensure vertico-directory
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+(use-package embark
+  :ensure embark)
+
+(use-package embark-consult
+  :ensure embark-consult
+  :hook
+  (embark-collection-mode .consult-preview-at-point-mode))
 
 (provide 'completions)
 ;;; completion.el ends here
