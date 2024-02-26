@@ -39,11 +39,11 @@
 ;;;; If you don't set this early on, sometimes things get wonky.
 (set-face-attribute 'default nil
                     :font "JetBrainsMono Nerd Font"
-                    :height 130
+                    :height 140
                     :weight 'regular)
 (set-face-attribute 'fixed-pitch nil
                     :font "JetBrainsMono Nerd Font"
-                    :height 130
+                    :height 140
                     :weight 'regular)
 ;; Makes commented text and keywords italics.
 ;; This is working in emacsclient but not emacs.

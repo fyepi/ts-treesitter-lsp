@@ -124,12 +124,7 @@
   (:map dired-mode-map
         ("E"                         . wdired-change-to-wdired-mode)
         ([remap beginning-of-buffer] . dired-back-to-top)
-        ([remap end-of-buffer]       . dired-jump-to-bottom))
-  :custom
-  (dired-kill-when-opening-new-dired-buffer t)
-  (dired-recursive-copies 'always)
-  :config
-  (setq-default dired-listing-switches "-alhv --time-style=long-iso"))
+        ([remap end-of-buffer]       . dired-jump-to-bottom)))
 
 
 ;;; DISABLE / ENABLE
@@ -469,8 +464,8 @@ Ignores `ARG'."
   :custom
   (whitespace-style
    '(face tabs spaces trailing lines-tail
-     space-before-tab newline indentation empty
-     space-after-tab space-mark tab-mark newline-mark)))
+          space-before-tab newline indentation empty
+          space-after-tab space-mark tab-mark newline-mark)))
 
 
 ;;; YANK
@@ -483,10 +478,3 @@ Ignores `ARG'."
 
 (provide 'builtins)
 ;;; builtins.el ends here
-
-
-
-
-
-
-
