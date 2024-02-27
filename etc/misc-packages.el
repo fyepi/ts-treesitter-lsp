@@ -483,25 +483,6 @@
                  (reusable-frames . visible)
                  (window-height . 0.3))))
 
-;;; PYTHON-ISH STUFF
-(use-package conda
-  :ensure conda
-  :functions
-  conda-env-activate-for-buffer
-  conda-env-autoactivate-mode
-  :hook
-  (python-base-mode . conda-env-activate-for-buffer)
-  :custom
-  (conda-anaconda-home "/opt/miniconda3/")
-  :init
-  (conda-env-autoactivate-mode t)
-  (add-to-list 'safe-local-variable-values '(conda-project-env-path . "nods_dev")))
-
-(use-package python
-  :ensure python
-  :bind
-  (:map python-base-mode-map ("RET" . newline-and-indent)))
-
 ;;; RUST STUFF
 (use-package rustic
   :ensure rustic

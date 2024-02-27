@@ -35,31 +35,7 @@
 ;;;; This makes `find-file' in a buffer like `*scratch*' default to
 ;;;; $HOME instead of `/'
 (setq default-directory "~/")
-;;; DEFAULT FACE
-;;;; If you don't set this early on, sometimes things get wonky.
-(set-face-attribute 'default nil
-                    :font "JetBrainsMono Nerd Font"
-                    :height 130
-                    :weight 'semibold)
-(set-face-attribute 'fixed-pitch nil
-                    :font "JetBrainsMono Nerd Font"
-                    :height 130
-                    :weight 'semibold)
-(set-face-attribute 'variable-pitch nil
-                    :font "JetBrainsMono Nerd Font"
-                    :height 130
-                    :weight 'semibold)
-;; Makes commented text and keywords italics.
-;; This is working in emacsclient but not emacs.
-;; Your font must have an italic face available.
-(set-face-attribute 'font-lock-comment-face nil
-                    :slant 'italic)
-(set-face-attribute 'font-lock-keyword-face nil
-                    :slant 'italic)
 
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font"))
-
-(set-face-attribute 'mode-line nil :height 140 :family "JetBrainsMono Nerd Font")
 
 ;;; ELPA
 (require 'package)
@@ -175,6 +151,30 @@
   (if (file-readable-p (concat os/emacs-config-dir pkg ".el"))
       (load-library pkg)))
 
+
+;;; DEFAULT FACE
+;;;; If you don't set this early on, sometimes things get wonky.
+(set-face-attribute 'default nil
+                    :font "JetBrainsMono Nerd Font"
+                    :height 130
+                    :weight 'semibold)
+(set-face-attribute 'fixed-pitch nil
+                    :font "JetBrainsMono Nerd Font"
+                    :height 130
+                    :weight 'semibold)
+(set-face-attribute 'variable-pitch nil
+                    :font "JetBrainsMono Nerd Font"
+                    :height 130
+                    :weight 'semibold)
+;; Makes commented text and keywords italics.
+;; This is working in emacsclient but not emacs.
+;; Your font must have an italic face available.
+(set-face-attribute 'font-lock-comment-face nil
+                    :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil
+                    :slant 'italic)
+
+(set-face-attribute 'mode-line nil :height 120 :family "JetBrainsMono Nerd Font")
 
 (provide 'init)
 ;;; init.el ends here

@@ -156,9 +156,9 @@ and ARGS will be any args it originally got."
   (if (file-exists-p os/nvmrc-file)
       (progn
         (setq os/node-version (os/chomp-end
-                                     (with-temp-buffer
-                                       (insert-file-contents os/nvmrc-file)
-                                       (buffer-string))))
+                               (with-temp-buffer
+                                 (insert-file-contents os/nvmrc-file)
+                                 (buffer-string))))
         (os/nvm os/node-version)
         (message "Set up to use node version %s" os/node-version))))
 
@@ -172,25 +172,6 @@ Node version locally available."
            (car (car (last (nvm--installed-versions)))))))
   (nvm-use version)
   (setq exec-path (parse-colon-path (getenv "PATH"))))
-
-
-;;; LINE NUMBERS WITH M-G
-;; from http://whattheemacsd.com//key-bindings.el-01.html
-(defun goto-line-with-feedback ()
-  "Show line numbers temporarily, while prompting for the line number input."
-  (interactive)
-  (defvar goto/line 0)
-  (unwind-protect
-      (progn
-        ;; display-line-numbers is Emacs 26 specific; if this gives
-        ;; you problems, conditionalize between it and linum-mode
-        ;; depending on Emacs version
-        (display-line-numbers-mode 1)
-        (setq goto/line (read-number "Goto line: "))
-        (goto-char (point-min))
-        (forward-line (1- goto/line)))
-    (display-line-numbers-mode -1)))
-(bind-key "M-g" #'goto-line-with-feedback)
 
 
 ;;; MACRO
@@ -288,7 +269,7 @@ If provided, ARG will be passed as a macro execution repeat count."
           (t (error "%s" "Not an expression boundary.")))))
 (bind-key "C-%" #'genehack/paren-bounce)
 (bind-key "C-5" #'genehack/paren-bounce)
-                              
+
 (defun os/set-frame-font-size (&optional font-size)
   "Change frame font size to FONT-SIZE.
 If no FONT-SIZE provided, reset the size to its default variable."

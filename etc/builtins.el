@@ -9,6 +9,32 @@
 ;;; ANSI-MODE FOR SHELLS
 (ansi-color-for-comint-mode-on)
 
+;;; FONTS & FONT SIZES
+(set-face-attribute 'default nil
+                    :font "JetBrainsMono Nerd Font"
+                    :height 130
+                    :weight 'semibold)
+(set-face-attribute 'fixed-pitch nil
+                    :font "JetBrainsMono Nerd Font"
+                    :height 130
+                    :weight 'semibold)
+(set-face-attribute 'variable-pitch nil
+                    :font "JetBrainsMono Nerd Font"
+                    :height 130
+                    :weight 'semibold)
+;; Makes commented text and keywords italics.
+;; This is working in emacsclient but not emacs.
+;; Your font must have an italic face available.
+(set-face-attribute 'font-lock-comment-face nil
+                    :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil
+                    :slant 'italic)
+
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font"))
+
+(set-face-attribute 'mode-line nil :height 140 :family "JetBrainsMono Nerd Font")
+
+
 
 ;;; AUTO CREATE DIRECTORIES
 ;;;; after <http://atomized.org/2008/12/emacs-create-directory-before-saving/>
@@ -69,7 +95,7 @@
 (setq-default cursor-type 'box)
 
 ;;; DEBUGGING
-(setq-default warning-minimum-level :error)
+(setq-default warning-minimum-level :warning)
 
 
 ;;; DESKTOP

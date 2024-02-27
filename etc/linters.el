@@ -51,18 +51,20 @@
   (flymake-diagnostic-at-point-display-diagnostic-function
    #'os/display-flymake-diagnostic-in-popup-and-minibuffer))
 
+
 (use-package flymake-eslint
   :ensure flymake-eslint
-  :after (flymake)
+  :after flymake
   :hook
   (js2-mode . flymake-eslint-enable)
-  (web-mode . flymake-eslint-enable)
-  (typescript-ts-mode .  (lambda () (flymake-eslint-enable)))
-  (tsx-ts-mode . (lambda () (flymake-eslint-enable))))
+  (web-mode .  flymake-eslint-enable))
+
+(add-hook 'tsx-ts-mode  #'flymake-eslint-enable 90)
+(add-hook 'typescript-ts-mode  #'flymake-eslint-enable 90)
 
 (use-package flymake-json
   :ensure flymake-json
-  :after (flymake)
+  :after flymake
   :hook
   (js-mode . flymake-json-load)
   (typescript-ts-mode . flymake-json-load)
