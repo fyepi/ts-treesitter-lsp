@@ -9,33 +9,6 @@
 ;;; ANSI-MODE FOR SHELLS
 (ansi-color-for-comint-mode-on)
 
-;;; FONTS & FONT SIZES
-(set-face-attribute 'default nil
-                    :font "JetBrainsMono Nerd Font"
-                    :height 130
-                    :weight 'semibold)
-(set-face-attribute 'fixed-pitch nil
-                    :font "JetBrainsMono Nerd Font"
-                    :height 130
-                    :weight 'semibold)
-(set-face-attribute 'variable-pitch nil
-                    :font "JetBrainsMono Nerd Font"
-                    :height 130
-                    :weight 'semibold)
-;; Makes commented text and keywords italics.
-;; This is working in emacsclient but not emacs.
-;; Your font must have an italic face available.
-(set-face-attribute 'font-lock-comment-face nil
-                    :slant 'italic)
-(set-face-attribute 'font-lock-keyword-face nil
-                    :slant 'italic)
-
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font"))
-
-(set-face-attribute 'mode-line nil :height 140 :family "JetBrainsMono Nerd Font")
-
-
-
 ;;; AUTO CREATE DIRECTORIES
 ;;;; after <http://atomized.org/2008/12/emacs-create-directory-before-saving/>
 (defun os/before-save-hook ()
@@ -313,12 +286,7 @@ Ignores `ARG'."
 (setq org-goto-interface "outline-path-completion")
 
 (custom-set-faces
- '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
- '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
- '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
- '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
- '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
- )
+ '(org-level-1 ((t (:inherit outline-1 :height 1.1)))))
 
 (setq org-directory "~/org/"
       org-agenda-files '("~/org/todo.org")
@@ -410,9 +378,7 @@ Ignores `ARG'."
          :clock-in :clock-resume
          :empty-lines 1)))
 
-(global-set-key (kbd "C-c l") #'org-store-link)
-(global-set-key (kbd "C-c a") #'org-agenda)
-(global-set-key (kbd "C-c c") #'org-capture)
+
 
 (defun jfdi ()
   "JFDI!"

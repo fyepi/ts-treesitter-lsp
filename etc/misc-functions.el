@@ -33,16 +33,8 @@
 (declare-function projectile-find-file "projectile")
 
 
-(defun os/find-file (arg)
-  "Pick `projectile-file-file` or `find-file` (Force latter w/ARG).
-Decision is based on the value of `projectile-project-p`.  If
-given a prefix arg ARG, unconditionally use `find-file`."
-  (interactive "P")
-  (if (and (projectile-project-p) (null arg))
-      (projectile-find-file)
-    (call-interactively 'find-file)))
-(bind-key "C-x f"   #'os/find-file)
-(bind-key "C-x C-f" #'os/find-file)
+
+(bind-key "C-x C-f" #'find-file)
 
 (defun os/kill-this-buffer ()
   "Kill the current buffer without prompting."
@@ -292,7 +284,6 @@ If no FONT-SIZE provided, reset the size to its default variable."
   (interactive)
   (os/set-frame-font-size (- os/font-size 1)))
 (bind-key "M-_" #'os/global-text-scale-decrease)
-(bind-key "M--" #'text-scale-decrease)
 
 (defun os/global-text-scale-reset ()
   "Reset frame font."

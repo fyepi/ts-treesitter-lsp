@@ -59,8 +59,16 @@
   (js2-mode . flymake-eslint-enable)
   (web-mode .  flymake-eslint-enable))
 
-(add-hook 'tsx-ts-mode  #'flymake-eslint-enable 90)
-(add-hook 'typescript-ts-mode  #'flymake-eslint-enable 90)
+
+(defun os/enable-eslint-if-typescript ()
+  "Enable eslint if typescript mode"
+  (when (or (eq major-mode 'tsx-ts-mode)
+            (eq major-mode 'typescript-ts-mode))
+    (flymake-eslint-enable)))
+
+;; Eglot overrides flymake backends so we need to wait until
+;; eglot is initialised before we can enable the esling flymake backend
+(add-hook 'eglot-managed-mode-hook #'os/enable-eslint-if-typescript)
 
 (use-package flymake-json
   :ensure flymake-json
