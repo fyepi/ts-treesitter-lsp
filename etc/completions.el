@@ -339,5 +339,6 @@
   :hook
   (embark-collection-mode .consult-preview-at-point-mode))
 
+
 (provide 'completions)
 ;;; completion.el ends here
