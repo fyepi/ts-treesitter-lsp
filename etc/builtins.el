@@ -149,9 +149,9 @@
   (ffap-bindings))
 
 
-;;; FLYSPELL
-(use-package flyspell
-  :diminish)
+;;; FLYSPELL - disabled until I configure correctly
+;; (use-package flyspell
+;; :diminish)
 
 
 ;;; FONT-LOCK
