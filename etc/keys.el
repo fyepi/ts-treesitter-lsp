@@ -19,6 +19,22 @@
 (bind-key "C-c l"        #'org-store-link)
 (bind-key "C-c a"        #'org-agenda)
 (bind-key "C-c c"        #'org-capture)
+(bind-key "M-f" #'forward-to-word)
+
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
+
 
 (add-hook 'org-mode-hook
           (lambda ()

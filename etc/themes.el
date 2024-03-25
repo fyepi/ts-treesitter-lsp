@@ -20,7 +20,7 @@
   (interactive)
   (load-theme 'solarized-light t))
 
-(os/solarize-this-light)
+(load-theme 'doom-palenight)
 
 (provide 'themes)
 ;;; themes.el ends here
