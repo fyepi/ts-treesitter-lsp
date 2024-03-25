@@ -71,9 +71,10 @@
 (setq-default warning-minimum-level :warning)
 
 
-;;; DESKTOP
-(desktop-save-mode 1)
+(recentf-mode 1)
 
+;;; DESKTOP
+(desktop-save-mode -1)
 
 ;;; DIRED
 ;;;; having all-the-icons mode on is pretty, but having the icons in
@@ -481,6 +482,7 @@ Ignores `ARG'."
 
 ;;; TEXT-MODE
 (declare-function filladapt-mode "fillapdapt")
+
 (defun os/set-up-text-mode ()
   "My customizations for `text-mode'."
   (require 'filladapt)
@@ -528,16 +530,6 @@ Ignores `ARG'."
 ;;; VIEW MODE
 ;;;; use view-mode in read-only buffers (https://karthinks.com/software/batteries-included-with-emacs/)
 (setq view-read-only t)
-
-
-;;; WHITESPACE
-(use-package whitespace
-  :custom
-  (whitespace-style
-   '(face tabs spaces trailing lines-tail
-          space-before-tab newline indentation empty
-          space-after-tab space-mark tab-mark newline-mark)))
-
 
 ;;; YANK
 (setq-default mouse-yank-at-point t)

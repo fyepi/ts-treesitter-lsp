@@ -395,5 +395,18 @@ Applies to the modes in os/strip-trailing-whitespace-in-these-modes."
 (bind-key "C-c C-t" #'os/strip-whitespace-and-indent)
 
 
+(defun cider-jack-in-sqa (params)
+  "Jack in to sqa."
+  (interactive "P")
+  (let ((cider-clojure-cli-global-options "-A:dev:profile:test:clj-refactor"))
+    (cider-jack-in-clj params)))
+
+
+(defun cider-jack-in-vollm (params)
+  (interactive "P")
+  (let ((cider-clojure-cli-global-options "-M:dev:test:reveal"))
+    (cider-jack-in-clj params)))
+
+
 (provide 'misc-functions)
 ;;; misc-functions.el ends here
