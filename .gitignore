@@ -31,3 +31,5 @@ init_backup.el
 nov-places
 projects
 straight/
+/tutorial/
+/elgrep-data.el
