@@ -231,7 +231,6 @@ If provided, ARG will be passed as a macro execution repeat count."
   (newline)
   (forward-line -1)
   (indent-for-tab-command))
-(bind-key "M-<return>" #'open-line-above)
 
 
 ;;; OPEN WITH
@@ -330,7 +329,7 @@ Also copies the new UUID to the clipboard."
 
 
 ;;; WHITE SPACE RELATED STUFF
-(setq-default show-trailing-whitespace t)
+(setq-default show-trailing-whitespace nil)
 (setq-default require-final-newline t)
 
 (defun os/kill-space-forward ()

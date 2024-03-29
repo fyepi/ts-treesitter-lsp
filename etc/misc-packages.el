@@ -24,7 +24,6 @@
   :bind
   ("C-c a"   . projectile-ag)
   ("C-c C-o" . projectile-multi-occur)
-  ("C-x p"   . projectile-switch-project)
   (:map projectile-mode-map ("C-c p" . projectile-command-map))
   :bind*
   ("C-c C-a" . projectile-ag) ;; fuck you js2-mode
@@ -954,11 +953,13 @@
  '(prisma "https://github.com/victorhqc/tree-sitter-prisma"))
 
 
-
-
 ;;; Rest client
 (use-package restclient
   :ensure restclient)
+
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (provide 'misc-packages)
 ;;; misc-packages.el ends here

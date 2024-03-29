@@ -227,6 +227,7 @@
        :includeInlayEnumMemberValueHints t)))))
 
 (declare-function eglot-signature-eldoc-function "eglot")
+
 (use-package eglot-signature-eldoc-talkative
   :ensure eglot-signature-eldoc-talkative
   :functions
@@ -341,4 +342,4 @@
 
 
 (provide 'completions)
-;;; completion.el ends here
+;;; completions.el ends here

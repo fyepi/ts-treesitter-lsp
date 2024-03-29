@@ -1,7 +1,7 @@
 ;;; builtins.el -- Customizations of built-in (non-third party) options.  ;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;;;; Large packages (eg Gnus, ERC, etc.) should get dedicated files but
+;;;; Large packages (ex. Gnus, ERC, etc.) should get dedicated files but
 ;;;; for standard stuff where one or two options get frobbed, this is
 ;;;; the place.
 
@@ -114,15 +114,14 @@
   dired
   dired-jump
   dired-next-line
-  :hook
-  ((dired-mode . all-the-icons-dired-mode))
   :bind
   ("C-c d"   . dired-jump)
   ("C-c C-d" . dired-jump)
   (:map dired-mode-map
         ("E"                         . wdired-change-to-wdired-mode)
         ([remap beginning-of-buffer] . dired-back-to-top)
-        ([remap end-of-buffer]       . dired-jump-to-bottom)))
+        ([remap end-of-buffer]       . dired-jump-to-bottom))
+  )
 
 
 ;;; DISABLE / ENABLE
