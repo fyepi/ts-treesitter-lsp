@@ -251,7 +251,7 @@ closing tag."
    ;; self-closing tags can be turned into regular tag sets
    (eq "jsx_self_closing_element"
        (treesit-node-type (treesit-node-at (point) 'tsx t)))
-   ;; (eq current-named-node-type "jsx_self_closing_element")
+   (eq current-named-node-type "jsx_self_closing_element")
    ;; a "</>" string inserted via `tsx-mode-auto-tags' can be turned into
    ;; a set of JSX fragment tags
    (save-excursion

@@ -138,6 +138,7 @@
   '(
     "builtins"
     "init"
+    "treesitter"
     "completions"
     "keys"
     "linters"

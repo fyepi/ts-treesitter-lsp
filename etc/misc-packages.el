@@ -557,31 +557,6 @@
   :config
   (move-text-default-bindings))
 
-
-;;; MULTI-TERM
-(setq system-uses-terminfo nil)
-(use-package multi-term
-  :ensure multi-term
-  :commands
-  multi-term
-  term
-  :defines
-  term-buffer-maximum-size
-  :hook
-  (term-mode . (lambda () (setq show-trailing-whitespace nil)))
-  :bind
-  ("<f8>" . multi-term-dedicated-toggle)
-  :init
-  (defalias 'term 'multi-term)
-  :custom
-  (multi-term-dedicated-select-after-open-p t)
-  (multi-term-dedicated-window-height 24)
-  (term-default-bg-color "#000000")
-  (term-default-fg-color "#cccccc")
-  :config
-  (setq-default term-buffer-maximum-size 10000))
-
-
 ;;; NODEJS-REPL
 (use-package nodejs-repl
   :ensure nodejs-repl
@@ -670,34 +645,6 @@
   (scala-mode . ensime-scala-mode-hook))
 
 
-;;; SMARTPARENS
-(use-package smartparens
-  :ensure smartparens
-  :diminish
-  :functions
-  show-smartparens-global-mode
-  smartparens-global-mode
-  turn-off-smartparens-mode
-  :bind
-
-  ("M-{" . sp-wrap-curly)
-  ("M-[" . sp-wrap-square)
-  ("M-'" . sp-raise-sexp)
-  ("M-(" . sp-wrap-round)
-  ("M-J" . sp-forward-barf-sexp)
-  ("M-K" . sp-forward-slurp-sexp)
-  ("C-M-a" . sp-beginning-of-sexp)
-  ("C-M-b" . sp-backward-sexp)
-  ("C-M-e" . sp-end-of-sexp)
-  ("C-M-f" . sp-forward-sexp)
-  ("C-M-n" . sp-next-sexp)
-  ("C-M-p" . sp-previous-sexp)
-  :init
-  (require 'smartparens-config)
-  :config
-  (smartparens-global-mode 1)
-  (show-smartparens-global-mode t))
-
 
 ;;; SVELTE-MODE
 (use-package svelte-mode
@@ -732,74 +679,6 @@
   :hook
   (terraform-mode . terraform-format-on-save-mode))
 
-
-;;; TREESIT
-(use-package treesit
-  :ensure nil
-  :demand
-  :commands
-  treesit-font-lock-recompute-features
-  :custom
-  (treesit-font-lock-level 4)
-  :config
-  (setq major-mode-remap-alist
-        '(
-          (bash-mode . bash-ts-mode)
-          (css-mode . css-ts-mode)
-          (js2-mode . js-ts-mode)
-          (json-mode . json-ts-mode)
-          (python-mode . python-ts-mode)
-          (typescript-mode . typescript-ts-mode)
-          (yaml-mode . yaml-ts-mode)))
-  (treesit-font-lock-recompute-features))
-
-;;; TREESIT-AUTO
-(use-package treesit-auto
-  :ensure treesit-auto
-  :demand
-  :commands
-  global-treesit-auto-mode
-  make-treesit-auto-recipe
-  treesit-auto-add-to-auto-mode-alist
-  treesit-auto-install-all
-  :defines
-  treesit-auto-fallback-alist
-  treesit-auto-recipe-list
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (add-to-list 'treesit-auto-fallback-alist '(bash-ts-mode . sh-mode))
-  (treesit-auto-add-to-auto-mode-alist)
-  (global-treesit-auto-mode))
-
-;; this fixes a problem where v0.20.4 of this grammar blows up with emacs
-(defvar os/tsx-treesit-auto-recipe
-  (make-treesit-auto-recipe
-   :lang 'tsx
-   :ts-mode 'tsx-ts-mode
-   :remap '(typescript-tsx-mode)
-   :requires 'typescript
-   :url "https://github.com/tree-sitter/tree-sitter-typescript"
-   :revision "v0.20.3"
-   :source-dir "tsx/src"
-   :ext "\\.tsx\\'")
-  "Recipe for `libtree-sitter-tsx.dylib'.")
-(add-to-list 'treesit-auto-recipe-list os/tsx-treesit-auto-recipe)
-(defvar os/typescript-treesit-auto-recipe
-  (make-treesit-auto-recipe
-   :lang 'typescript
-   :ts-mode 'typescript-ts-mode
-   :remap 'typescript-mode
-   :requires 'tsx
-   :url "https://github.com/tree-sitter/tree-sitter-typescript"
-   :revision "v0.20.3"
-   :source-dir "typescript/src"
-   :ext "\\.ts\\'")
-  "Recipe for `libtree-sitter-typescript.dylib'.")
-(add-to-list 'treesit-auto-recipe-list os/typescript-treesit-auto-recipe)
-
-
-;;; TYPESCRIPT-TS-MODE
 (use-package ansi-color
   :defines ansi-color-compilation-filter)
 (use-package compile
@@ -807,24 +686,6 @@
   compilation-filter-hook)
 
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
-
-(defun os/typescript-ts-mode-setup ()
-  "Set up `typescript-ts-mode' for os."
-  (set (make-local-variable 'compile-command) "tsc"))
-
-(use-package typescript-ts-mode
-  :ensure typescript-ts-mode
-  :mode
-  "\\.ts\\'"
-  :hook
-  (typescript-ts-base-mode . add-node-modules-path)
-  (typescript-ts-base-mode . os/typescript-ts-mode-setup))
-
-(add-to-list 'auto-mode-alist
-             '("\\.[jt]s[x]?\\'" . tsx-mode))
-(add-to-list 'auto-mode-alist
-             '("\\.[mc]js?\\'" . tsx-mode))
-
 
 ;;; UNICODE-FONTS
 (use-package unicode-fonts
@@ -953,7 +814,6 @@
 (add-hook 'cider-repl-mode-hook 'os/cider-repl-mode-hook)
 
 
-
 ;;; PRISMA
 (use-package prisma-ts-mode
   :ensure t)
@@ -970,6 +830,16 @@
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package highlight-indent-guides
+  :ensure t
+  :defines
+  highlight-indent-guides-method
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :config (setq highlight-indent-guides-method 'character))
+
+(use-package multiple-cursors
+  :ensure t)
 
 (provide 'misc-packages)
 ;;; misc-packages.el ends here
