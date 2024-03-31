@@ -149,11 +149,6 @@
   (ffap-bindings))
 
 
-;;; FLYSPELL - disabled until I configure correctly
-;; (use-package flyspell
-;; :diminish)
-
-
 ;;; FONT-LOCK
 (use-package font-lock
   :custom
@@ -193,6 +188,7 @@
     terraform-mode
     typescript-ts-mode
     tsx-ts-mode
+    tsx-mode
     web-mode)
   "List of modes to set up to do indent-on-paste.
 Also remove-leading-whitespace-on-kill-line tricks")
@@ -217,7 +213,6 @@ Ignores `ARG'."
   :config
   ;; Also auto refresh dired, but be quiet about it
   (global-auto-revert-mode t))
-
 
 ;;; HTML-MODE
 ;;;; `html-mode' is actually defined in `sgml-mode.el'

@@ -841,5 +841,27 @@
 (use-package multiple-cursors
   :ensure t)
 
+;;; SMARTPARENS
+(use-package smartparens
+  :ensure smartparens
+  :diminish
+  :functions
+  show-smartparens-global-mode
+  smartparens-global-mode
+  turn-off-smartparens-mode
+  :bind
+
+  ("M-{" . sp-wrap-curly)
+  ("M-[" . sp-wrap-square)
+  ("M-'" . sp-raise-sexp)
+  ("M-(" . sp-wrap-round)
+  ("M-J" . sp-forward-barf-sexp)
+  ("M-K" . sp-forward-slurp-sexp)
+  :init
+  (require 'smartparens-config)
+  :config
+  (smartparens-global-mode 1)
+  (show-smartparens-global-mode t))
+
 (provide 'misc-packages)
 ;;; misc-packages.el ends here
