@@ -679,6 +679,13 @@
   smartparens-global-mode
   turn-off-smartparens-mode
   :bind
+
+  ("M-{" . sp-wrap-curly)
+  ("M-[" . sp-wrap-square)
+  ("M-'" . sp-raise-sexp)
+  ("M-(" . sp-wrap-round)
+  ("M-J" . sp-forward-barf-sexp)
+  ("M-K" . sp-forward-slurp-sexp)
   ("C-M-a" . sp-beginning-of-sexp)
   ("C-M-b" . sp-backward-sexp)
   ("C-M-e" . sp-end-of-sexp)
