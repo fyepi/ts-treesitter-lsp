@@ -813,7 +813,10 @@
   (typescript-ts-base-mode . add-node-modules-path)
   (typescript-ts-base-mode . os/typescript-ts-mode-setup))
 
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist
+             '("\\.[jt]s[x]?\\'" . tsx-mode))
+(add-to-list 'auto-mode-alist
+             '("\\.[mc]js?\\'" . tsx-mode))
 
 
 ;;; UNICODE-FONTS

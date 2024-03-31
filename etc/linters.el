@@ -63,6 +63,7 @@
 (defun os/enable-eslint-if-typescript ()
   "Enable eslint if typescript mode"
   (when (or (eq major-mode 'tsx-ts-mode)
+            (eq major-mode 'tsx-mode)
             (eq major-mode 'typescript-ts-mode))
     (flymake-eslint-enable)))
 

@@ -144,7 +144,9 @@
     "misc-functions"
     "misc-highlights"
     "misc-packages"
-    "themes")
+    "themes"
+    "css-in-js-mode"
+    "tsx-mode")
   "List of modules to load on startup.")
 
 (dolist (pkg os/module-list)

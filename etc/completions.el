@@ -154,7 +154,7 @@
   :custom
   (corfu-auto t)
   (corfu-auto-prefix 2)
-  (corfu-auto-delay 0.1)
+  (corfu-auto-delay 0.0)
   (corfu-min-width 80)
   (corfu-max-width corfu-min-width)       ; Always have the same width
   (corfu-count 10)
@@ -194,7 +194,7 @@
   ;;
   ;; note: have to use `equal' as the comparator function because of
   ;; the list-ness of the key in the alist
-  (setf (alist-get '(js2-mode tsx-ts-mode typescript-ts-mode) eglot-server-programs "" nil 'equal)
+  (setf (alist-get '(js2-mode typescript-ts-mode) eglot-server-programs "" nil 'equal)
         '("typescript-language-server" "--stdio"))
 
   ;; Make Pandas play well with Pyright
@@ -212,7 +212,7 @@
   ;;; https://www.reddit.com/r/emacs/comments/11bqzvk/emacs29_and_eglot_inlay_hints/
   (add-to-list
    'eglot-server-programs
-   '((js2-mode tsx-ts-mode typescript-ts-mode)
+   '((js2-mode tsx-mode tsx-ts-mode typescript-ts-mode)
      "typescript-language-server" "--stdio"
      :initializationOptions
      (:preferences
