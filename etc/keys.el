@@ -30,6 +30,7 @@
   evil-want-keybinding
   evil-want-integration
   evil-want-C-w-in-emacs-state
+  evil-disable-insert-state-bindings
   :functions
   evil-global-set-key
   evil-mode
@@ -38,6 +39,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-w-delete nil)
   (setq evil-want-C-w-in-emacs-state nil)
+  (setq evil-disable-insert-state-bindings t)
   :config
   (evil-global-set-key 'normal (kbd "C-r") 'isearch-backward)
   (evil-global-set-key 'insert (kbd "C-r") 'isearch-backward)
