@@ -341,5 +341,10 @@
   (embark-collection-mode .consult-preview-at-point-mode))
 
 
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
 (provide 'completions)
 ;;; completions.el ends here
