@@ -136,7 +136,9 @@
 ;;;; ease of use.
 (defvar os/module-list
   '(
+    "secrets"
     "builtins"
+    "straight"
     "init"
     "treesitter"
     "completions"

@@ -33,3 +33,4 @@ projects
 straight/
 /tutorial/
 /elgrep-data.el
+secrets.el
