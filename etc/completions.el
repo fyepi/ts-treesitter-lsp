@@ -199,7 +199,9 @@
         ("C-c c r" . eglot-rename)
         ("C-c c f" . eglot-format))
   :custom
+  (eglot-connect-timeout 100)
   (eglot-autoshutdown t)
+  (eglot-sync-connect nil)
   (eglot-ignored-server-capabilities
    '(:documentFormattingProvider
      :documentRangeFormattingProvider
