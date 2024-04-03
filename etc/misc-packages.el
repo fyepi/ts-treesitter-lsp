@@ -256,6 +256,7 @@
         '("prettier" "--stdin-filepath" filepath))
   (setf (alist-get 'python-mode apheleia-mode-alist) 'ruff)
   (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
+  (setf (alist-get 'prisma-ts-mode apheleia-mode-alist) 'prettier)
   (apheleia-global-mode +1))
 
 

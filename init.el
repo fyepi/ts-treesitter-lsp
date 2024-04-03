@@ -136,7 +136,6 @@
 ;;;; ease of use.
 (defvar os/module-list
   '(
-    "secrets"
     "builtins"
     "straight"
     "init"
@@ -149,7 +148,8 @@
     "misc-packages"
     "themes"
     "css-in-js-mode"
-    "tsx-mode")
+    "tsx-mode"
+    "ai")
   "List of modules to load on startup.")
 
 (dolist (pkg os/module-list)
@@ -162,15 +162,15 @@
 (set-face-attribute 'default nil
                     :font "JetBrainsMono Nerd Font"
                     :height 130
-                    :weight 'semibold)
+                    :weight 'normal)
 (set-face-attribute 'fixed-pitch nil
                     :font "JetBrainsMono Nerd Font"
                     :height 130
-                    :weight 'semibold)
+                    :weight 'normal)
 (set-face-attribute 'variable-pitch nil
                     :font "JetBrainsMono Nerd Font"
                     :height 130
-                    :weight 'semibold)
+                    :weight 'normal)
 ;; Makes commented text and keywords italics.
 ;; This is working in emacsclient but not emacs.
 ;; Your font must have an italic face available.

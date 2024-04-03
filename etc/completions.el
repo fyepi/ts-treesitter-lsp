@@ -172,14 +172,26 @@
 ;;; EGLOT
 (use-package eglot
   :ensure eglot
+  :preface
+  (defun eglot-disable-in-cider ()
+    (when (eglot-managed-p)
+      (if (bound-and-true-p cider-mode)
+          (progn
+            (remove-hook 'completion-at-point-functions 'eglot-completion-at-point t)
+            (remove-hook 'xref-backend-functions 'eglot-xref-backend t))
+        (add-hook 'completion-at-point-functions 'eglot-completion-at-point nil t)
+        (add-hook 'xref-backend-functions 'eglot-xref-backend nil t))))
   :defines
   eglot-server-programs
   :functions
   eglot-signature-eldoc-function
-  :hook
+  :hook ((( clojure-mode clojurec-mode clojurescript-mode
+            java-mode scala-mode tsx-mode typescript-ts-mode
+            prisma-ts-mode js2-mode python-ts-mode) . eglot-ensure)
+
+         ((cider-mode eglot-managed-mode) . eglot-disable-in-cider))
   ;; https://lists.gnu.org/archive/html/emacs-devel/2023-02/msg00841.html
-  (eglot-managed-mode . eglot-inlay-hints-mode)
-  (prog-mode . eglot-ensure)
+  ;; (eglot-managed-mode . eglot-inlay-hints-mode))
   :bind
   (:map eglot-mode-map
         ("C-c c a" . eglot-code-actions)
@@ -188,6 +200,12 @@
         ("C-c c f" . eglot-format))
   :custom
   (eglot-autoshutdown t)
+  (eglot-ignored-server-capabilities
+   '(:documentFormattingProvider
+     :documentRangeFormattingProvider
+     :documentOnTypeFormattingProvider
+     :colorProvider
+     :foldingRangeProvider))
   :config
   ;; use typescript-languange-server instead of the eglot default --
   ;; provides better support for external deps
@@ -196,6 +214,13 @@
   ;; the list-ness of the key in the alist
   (setf (alist-get '(js2-mode typescript-ts-mode) eglot-server-programs "" nil 'equal)
         '("typescript-language-server" "--stdio"))
+
+
+  (setf (alist-get '(prisma-ts-mode) eglot-server-programs "" nil 'equal)
+        '("prisma-language-server" "--stdio"))
+
+  (setf (alist-get '(clojure-mode clojurec-mode clojurescript-mode) eglot-server-programs "" nil 'equal)
+        '("clojure-lsp"))
 
   ;; Make Pandas play well with Pyright
   ;;; https://www.reddit.com/r/emacs/comments/swqr6o/how_to_get_pyright_complete_pandas/
@@ -222,7 +247,7 @@
        :includeInlayFunctionParameterTypeHints t
        :includeInlayVariableTypeHints t
        :includeInlayVariableTypeHintsWhenTypeMatchesName t
-       :includeInlayPRopertyDeclarationTypeHints t
+       :includeInlayPropertyDeclarationTypeHints t
        :includeInlayFunctionLikeReturnTypeHints t
        :includeInlayEnumMemberValueHints t)))))
 
@@ -235,6 +260,14 @@
   :config
   (advice-add #'eglot-signature-eldoc-function
               :override #'eglot-signature-eldoc-talkative))
+
+(use-package jarchive
+  :ensure t
+  :defines
+  jarchive-setup
+  :after eglot
+  :config
+  (jarchive-setup))
 
 ;;; HIPPY-EXPAND
 (setq hippie-expand-try-functions-list

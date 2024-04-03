@@ -14,8 +14,7 @@
   (gptel-make-anthropic "Claude"
     :stream t
     :key os-secret-anthropic-key)
-  (setq gptel-api-key os-secret-openai-api-key)
-  ())
+  (setq gptel-api-key os-secret-openai-api-key))
 
 
 

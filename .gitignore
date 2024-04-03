@@ -34,3 +34,4 @@ straight/
 /tutorial/
 /elgrep-data.el
 secrets.el
+emacs-private.el
