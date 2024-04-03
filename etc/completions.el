@@ -185,9 +185,8 @@
   eglot-server-programs
   :functions
   eglot-signature-eldoc-function
-  :hook ((( clojure-mode clojurec-mode clojurescript-mode
-            java-mode scala-mode tsx-mode typescript-ts-mode
-            prisma-ts-mode js2-mode python-ts-mode) . eglot-ensure)
+  :hook (((tsx-mode typescript-ts-mode
+                    prisma-ts-mode js2-mode python-ts-mode) . eglot-ensure)
 
          ((cider-mode eglot-managed-mode) . eglot-disable-in-cider))
   ;; https://lists.gnu.org/archive/html/emacs-devel/2023-02/msg00841.html
@@ -255,6 +254,17 @@
 
 (declare-function eglot-signature-eldoc-function "eglot")
 
+(defun os/xref-use-cider ()
+  "Use CIDER as the completion function for xref."
+  (interactive)
+  (setq-local xref-backend-functions '(cider--xref-backend)))
+
+
+(defun os/xref-use-eglot ()
+  "Use CIDER as the completion function for xref."
+  (interactive)
+  (setq-local xref-backend-functions '(eglot-xref-backend)))
+
 (use-package eglot-signature-eldoc-talkative
   :ensure eglot-signature-eldoc-talkative
   :functions
@@ -270,6 +280,65 @@
   :after eglot
   :config
   (jarchive-setup))
+
+;; LSP & companions used for clojure + Java as experience is better
+;; For rest, use eglot
+(use-package lsp-mode
+  :ensure t
+  :hook ((lsp-mode . lsp-diagnostics-mode))
+  :custom
+  (lsp-keymap-prefix "C-c l")
+  (lsp-diagnostics-provider :flymake)
+  ;; (lsp-completion-provider :none)
+  (lsp-session-file (locate-user-emacs-file ".lsp-session"))
+  (lsp-log-io nil)
+  (lsp-keep-workspace-alive nil)
+  (lsp-idle-delay 0.5)
+  (lsp-enable-xref t)
+  (lsp-signature-doc-lines 1))
+
+(use-package lsp-completion
+  :no-require
+  :hook ((lsp-mode . lsp-completion-mode-maybe))
+  :commands (lsp-completion-mode)
+  :preface
+  (defun lsp-completion-mode-maybe ()
+    (unless (bound-and-true-p cider-mode)
+      (lsp-completion-mode 1))))
+
+(use-package lsp-treemacs
+  :ensure t
+  :defer t
+  :custom
+  (lsp-treemacs-theme "Iconless"))
+
+(use-package lsp-clojure
+  :demand t
+  :after lsp-mode
+  :hook (cider-mode . cider-toggle-lsp-completion-maybe)
+  :preface
+  (defun cider-toggle-lsp-completion-maybe ()
+    (lsp-completion-mode (if (bound-and-true-p cider-mode) -1 1))))
+
+(use-package lsp-clojure
+  :no-require
+  :hook ((clojure-mode
+          clojurec-mode
+          clojurescript-mode)
+         . lsp))
+
+(use-package lsp-java
+  :ensure t
+  :after lsp-mode
+  :hook (java-mode . lsp))
+
+(use-package lsp-metals
+  :ensure t
+  :after lsp-mode
+  :hook (scala-mode . lsp)
+  :custom
+  (lsp-metals-server-args
+   '("-J-Dmetals.allow-multiline-string-formatting=off")))
 
 ;;; HIPPY-EXPAND
 (setq hippie-expand-try-functions-list
