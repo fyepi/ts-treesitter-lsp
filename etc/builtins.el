@@ -291,7 +291,7 @@ Ignores `ARG'."
       org-journal-dir "~/org/journal/"
       org-journal-date-format "%B %d, %Y (%A) "
       org-journal-file-format "%Y-%m-%d.org"
-      org-hide-emphasis-markers t)
+      org-hide-emphasis-markers nil)
 (setq org-src-preserve-indentation nil
       org-src-tab-acts-natively t
       org-edit-src-content-indentation 0
