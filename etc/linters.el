@@ -52,24 +52,14 @@
    #'os/display-flymake-diagnostic-in-popup-and-minibuffer))
 
 
-(use-package flymake-eslint
-  :ensure flymake-eslint
-  :after flymake
-  :hook
-  (js2-mode . flymake-eslint-enable)
-  (web-mode .  flymake-eslint-enable))
 
+;; Flymake backend for lsp-bridge
+(use-package flymake-bridge
+  :straight '(flymake-bridge :type git :host github :repo "liuyinz/flymake-bridge"
+                             :files (:defaults "*.el" )
+                             :build (:not compile))
+  :hook (lsp-bridge-mode . flymake-bridge-setup))
 
-(defun os/enable-eslint-if-typescript ()
-  "Enable eslint if typescript mode"
-  (when (or (eq major-mode 'tsx-ts-mode)
-            (eq major-mode 'tsx-mode)
-            (eq major-mode 'typescript-ts-mode))
-    (flymake-eslint-enable)))
-
-;; Eglot overrides flymake backends so we need to wait until
-;; eglot is initialised before we can enable the esling flymake backend
-;; (add-hook 'eglot-managed-mode-hook #'os/enable-eslint-if-typescript)
 
 (use-package flymake-json
   :ensure flymake-json
