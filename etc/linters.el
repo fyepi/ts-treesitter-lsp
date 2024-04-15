@@ -69,7 +69,7 @@
 
 ;; Eglot overrides flymake backends so we need to wait until
 ;; eglot is initialised before we can enable the esling flymake backend
-(add-hook 'eglot-managed-mode-hook #'os/enable-eslint-if-typescript)
+;; (add-hook 'eglot-managed-mode-hook #'os/enable-eslint-if-typescript)
 
 (use-package flymake-json
   :ensure flymake-json

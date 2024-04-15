@@ -440,37 +440,22 @@
 (use-package eslint-fix
   :ensure eslint-fix)
 
-(use-package js2-mode
-  :ensure js2-mode
-  :diminish "js2"
-  :commands
-  js2-mode
-  :defines
-  js2-additional-externs
-  js2-mode-map
-  :hook
-  ((js2-mode . add-node-modules-path)
-   (js2-mode . (lambda ()
-                 (if (string-match "\\/test\\/" (buffer-file-name))
-                     (setq js2-additional-externs
-                           `("describe" "it" "before" "after")))))
-   (js2-mode .  (lambda() (add-hook 'after-save-hook 'eslint-fix nil t))))
-  :bind
-  (:map js2-mode-map ("C-?" . os/js2-insert-debug))
-  :interpreter
-  "node"
-  :mode
-  "\\.jsx?\\'"
-  :custom
-  (js2-global-externs '("Promise"))
-  (js2-highlight-level 3)
-  (js2-include-browser-externs nil)
-  (js2-include-node-externs t)
-  (js2-mode-assume-strict t)
+;; major-mode for JS/TS/JSX/TSX
+(use-package
+  tsx-mode
+  :straight '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el" :branch "main")
+  :defer
+  :mode (("\\.[jt]s[x]?\\'" . tsx-mode)
+         ("\\.[mc]js\\'" . tsx-mode))
   :config
-  (add-to-list 'safe-local-variable-values '(js2-basic-offset . 2))
-  (add-to-list 'safe-local-variable-values '(js2-basic-offset . 4))
-  (setq-default js2-basic-offset 2))
+  (setq tsx-mode-use-completion nil)
+  (setq tsx-mode-use-lsp nil)
+  :init
+  ;; this mode inherits from `typescript-ts-mode', but loading the latter will
+  ;; automatically update `auto-mode-alist' (clobbering any updates we might
+  ;; have made to it in the use-package :config block).
+  (require 'typescript-ts-mode))
+
 
 
 ;;; KOLON-MODE

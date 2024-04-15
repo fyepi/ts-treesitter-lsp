@@ -159,36 +159,25 @@
   (corfu-max-width corfu-min-width)       ; Always have the same width
   (corfu-count 10)
   (corfu-scroll-margin 4)
-  (corfu-popupinfo-delay 0.2)
+  (corfu-popupinfo-delay 0.0)
   (corfu-quit-at-boundary 'separator)
   (corfu-separtor ?\s) ;; space
   (corfu-quit-no-match 'separator)
   (confu-preview-current 'insert)
   :config
-  (global-corfu-mode)
-  (corfu-popupinfo-mode))
+  (global-corfu-mode 0)
+  (corfu-popupinfo-mode 0))
 
 
 ;;; EGLOT
 (use-package eglot
   :ensure eglot
-  :preface
-  (defun eglot-disable-in-cider ()
-    (when (eglot-managed-p)
-      (if (bound-and-true-p cider-mode)
-          (progn
-            (remove-hook 'completion-at-point-functions 'eglot-completion-at-point t)
-            (remove-hook 'xref-backend-functions 'eglot-xref-backend t))
-        (add-hook 'completion-at-point-functions 'eglot-completion-at-point nil t)
-        (add-hook 'xref-backend-functions 'eglot-xref-backend nil t))))
   :defines
   eglot-server-programs
+  eglot-events-buffer-size
   :functions
   eglot-signature-eldoc-function
-  :hook (((tsx-mode typescript-ts-mode
-                    prisma-ts-mode js2-mode python-ts-mode) . eglot-ensure)
-
-         ((cider-mode eglot-managed-mode) . eglot-disable-in-cider))
+  :hook (((prisma-ts-mode python-ts-mode) . eglot-ensure))
   ;; https://lists.gnu.org/archive/html/emacs-devel/2023-02/msg00841.html
   ;; (eglot-managed-mode . eglot-inlay-hints-mode))
   :bind
@@ -201,6 +190,7 @@
   (eglot-connect-timeout 100)
   (eglot-autoshutdown t)
   (eglot-sync-connect nil)
+  (eglot-events-buffer-size 0)
   (eglot-ignored-server-capabilities
    '(:documentFormattingProvider
      :documentRangeFormattingProvider
@@ -232,25 +222,55 @@
   ;; https://www.reddit.com/r/emacs/comments/1447fy2/looking_for_help_in_improving_typescript_eglot/
   ;; -- speed up?
   (declare-function jsonrpc--log-event "jsonrpc")
-  (fset #'jsonrpc--log-event #'ignore)
+  (fset #'jsonrpc--log-event #'ignore))
 
-  ;; add inlay hints to typescript
+;; add inlay hints to typescript
   ;;; https://www.reddit.com/r/emacs/comments/11bqzvk/emacs29_and_eglot_inlay_hints/
-  (add-to-list
-   'eglot-server-programs
-   '((js2-mode tsx-mode tsx-ts-mode typescript-ts-mode)
-     "typescript-language-server" "--stdio"
-     :initializationOptions
-     (:preferences
-      (
-       :includeInlayParameterNameHints "all"
-       :includeInlayParameterNameHintsWhenArgumentMatchesName t
-       :includeInlayFunctionParameterTypeHints t
-       :includeInlayVariableTypeHints t
-       :includeInlayVariableTypeHintsWhenTypeMatchesName t
-       :includeInlayPropertyDeclarationTypeHints t
-       :includeInlayFunctionLikeReturnTypeHints t
-       :includeInlayEnumMemberValueHints t)))))
+;; (add-to-list
+;;  'eglot-server-programs
+;;  '((js2-mode tsx-mode tsx-ts-mode typescript-ts-mode)
+;;    "typescript-language-server" "--stdio"
+;;    :initializationOptions
+;;    (:preferences
+;;     (
+;;      :includeInlayParameterNameHints "all"
+;;      :includeInlayParameterNameHintsWhenArgumentMatchesName t
+;;      :includeInlayFunctionParameterTypeHints t
+;;      :includeInlayVariableTypeHints t
+;;      :includeInlayVariableTypeHintsWhenTypeMatchesName t
+;;      :includeInlayPropertyDeclarationTypeHints t
+;;      :includeInlayFunctionLikeReturnTypeHints t
+;;      :includeInlayEnumMemberValueHints t)))))
+
+
+(use-package lsp-bridge
+  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
+                         :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+                         :build (:not compile))
+  :custom
+  (acm-enable-yas nil)
+  (acm-enable-icon nil)
+  (acm-enable-tabnine nil)
+  (acm-enable-codeium nil)
+  (acm-enable-seach-file-words nil)
+  (acm-doc-frame-max-lines 25)
+  (lsp-bridge-nix-lsp-server "nil")
+  (lsp-bridge-enable-hover-diagnostic t)
+  (lsp-bridge-code-action-enable-popup-menu nil)
+  (lsp-bridge-enable-inlay-hint nil)
+  (lsp-bridge-inlay-hint-overlays '())
+  :init
+  (global-lsp-bridge-mode)
+  (let ((filtered-list (cl-delete 'lsp-bridge-not-match-hide-characters lsp-bridge-completion-popup-predicates)))
+    (setq lsp-bridge-completion-popup-predicates filtered-list))
+  ;; <ret> is very annoying because lsp-bridge is too fast, unset it
+  (keymap-unset acm-mode-map "RET")
+  (define-key lsp-bridge-mode-map (kbd "C-c e") 'lsp-bridge-diagnostic-jump-next)
+  (define-key lsp-bridge-mode-map (kbd "M-.") 'lsp-bridge-find-def)
+  (define-key lsp-bridge-mode-map (kbd "C-c c r") 'lsp-bridge-rename)
+  (define-key lsp-bridge-mode-map (kbd "C-c c a") 'lsp-bridge-code-action)
+  (define-key lsp-bridge-mode-map (kbd "M-?") 'lsp-bridge-find-references)
+  (define-key lsp-bridge-mode-map (kbd "C-k") 'lsp-bridge-popup-documentation))
 
 (declare-function eglot-signature-eldoc-function "eglot")
 

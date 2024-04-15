@@ -22,7 +22,7 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(load-theme 'doom-one)
+;; (load-theme 'doom-one)
 
 (provide 'themes)
 ;;; themes.el ends here
