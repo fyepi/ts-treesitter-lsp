@@ -177,7 +177,7 @@
   eglot-events-buffer-size
   :functions
   eglot-signature-eldoc-function
-  :hook (((prisma-ts-mode python-ts-mode) . eglot-ensure))
+  :hook (((prisma-ts-mode) . eglot-ensure))
   ;; https://lists.gnu.org/archive/html/emacs-devel/2023-02/msg00841.html
   ;; (eglot-managed-mode . eglot-inlay-hints-mode))
   :bind
@@ -251,6 +251,7 @@
   (advice-add #'eglot-signature-eldoc-function
               :override #'eglot-signature-eldoc-talkative))
 
+
 (use-package lsp-bridge
   :after (evil)
   :defines
@@ -266,7 +267,8 @@
         acm-enable-doc t
         acm-enable-doc-markdown-render t
         lsp-bridge-enable-inlay-hint t
-        lsp-bridge-signature-show-function 'lsp-bridge-signature-show-with-frame)
+        lsp-bridge-signature-show-function 'message
+        lsp-bridge-epc-debug t)
   :bind
   (:map lsp-bridge-mode-map
         ("C-c c a" . lsp-bridge-code-action)
@@ -275,7 +277,7 @@
   :os/bind ((:map (lsp-bridge-mode-map . normal)
                   ("gr" . lsp-bridge-find-references)
                   ("gd" . lsp-bridge-find-def)
-                  ("K" . lsp-bridge-show-documentation))))
+                  ("K" . lsp-bridge-popup-documentation))))
 
 
 (declare-function eglot-signature-eldoc-function "eglot")
