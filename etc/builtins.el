@@ -374,13 +374,6 @@ Ignores `ARG'."
          :empty-lines 1)))
 
 
-
-(defun jfdi ()
-  "JFDI!"
-  (interactive)
-  (find-file "~/org/jfdi.org"))
-
-
 ;;; PAREN MATCH
 (use-package paren
   :custom
@@ -388,12 +381,6 @@ Ignores `ARG'."
   :config
   (setq show-paren-context-when-offscreen 'overlay)
   (show-paren-mode t))
-
-
-;;; PROG MODE
-(use-package prog-mode
-  :hook
-  (prog-mode . flyspell-prog-mode))
 
 
 ;;; PS PRINT
@@ -430,48 +417,6 @@ Ignores `ARG'."
 (size-indication-mode t)
 
 
-;;; SPELL CHECKING
-(defvar os/found-spelling-program nil
-  "Boolean indicating if a spelling program was found in the variable `exec-path'.")
-
-;;;; (note that exec-path probably needs to be munged before this is run)
-(defun os/find-in-exec-path (program)
-  "Find PROGRAM in variable `exec-path'."
-  (let ((found nil))
-    (dolist (path exec-path)
-      (if (file-exists-p (concat path "/" program))
-          (setq found t)))
-    found))
-
-(defun os/spelling-not-found ()
-  "Display message when *spell program can't be found."
-  (interactive)
-  (message "Spell check not enabled; neither aspell nor ispell found in path."))
-
-(use-package ispell
-  :custom
-  (ispell-silently-savep t)
-  :init
-  (if (os/find-in-exec-path "aspell")
-      (progn
-        (setq-default ispell-program-name "aspell")
-        (setq ispell-extra-args '("--sug-mode=ultra"))
-        (setq os/found-spelling-program t))
-    (if (os/find-in-exec-path "ispell")
-        (progn
-          (setq-default ispell-program-name "ispell")
-          (setq ispell-extra-args '("-W 3"))
-          (setq os/found-spelling-program t))))
-  (if (eq os/found-spelling-program t)
-      (progn
-        (autoload 'ispell-word   "ispell" "check word spelling."   t)
-        (autoload 'ispell-region "ispell" "check region spelling." t)
-        (autoload 'ispell-buffer "ispell" "check buffer spelling." t)
-        (require 'flyspell))
-    (progn
-      (defalias 'ispell-word   'os/spelling-not-found)
-      (defalias 'ispell-region 'os/spelling-not-found)
-      (defalias 'ispell-buffer 'os/spelling-not-found))))
 
 
 ;;; TEXT-MODE
@@ -481,9 +426,8 @@ Ignores `ARG'."
   "My customizations for `text-mode'."
   (require 'filladapt)
   (auto-fill-mode 1)
-  (filladapt-mode 1)
-  (if (eq os/found-spelling-program t)
-      (flyspell-mode 1)))
+  (filladapt-mode 1))
+
 (use-package text-mode
   :hook
   (text-mode . os/set-up-text-mode))

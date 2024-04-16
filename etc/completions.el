@@ -242,34 +242,6 @@
 ;;      :includeInlayFunctionLikeReturnTypeHints t
 ;;      :includeInlayEnumMemberValueHints t)))))
 
-(use-package lsp-bridge
-  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
-                         :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
-                         :build (:not compile))
-  :custom
-  (acm-enable-yas nil)
-  (acm-enable-icon nil)
-  (acm-enable-tabnine nil)
-  (acm-enable-codeium nil)
-  (acm-enable-seach-file-words nil)
-  (acm-doc-frame-max-lines 25)
-  (lsp-bridge-nix-lsp-server "nil")
-  (lsp-bridge-enable-hover-diagnostic t)
-  (lsp-bridge-diagnostic-enable-overlays t)
-  (lsp-bridge-code-action-enable-popup-menu nil)
-  (lsp-bridge-enable-inlay-hint t)
-  :init
-  (global-lsp-bridge-mode)
-  (define-key lsp-bridge-mode-map (kbd "M-.") 'lsp-bridge-find-def)
-  (define-key lsp-bridge-mode-map (kbd "C-c c r") 'lsp-bridge-rename)
-  (define-key lsp-bridge-mode-map (kbd "C-c c a") 'lsp-bridge-code-action)
-  (define-key lsp-bridge-mode-map (kbd "M-?") 'lsp-bridge-find-references)
-  (define-key lsp-bridge-mode-map (kbd "C-c c h") 'lsp-bridge-popup-documentation)
-  :config
-  (fset #'lsp-bridge-signature-show-function #'lsp-bridge-signature-show-with-frame))
-
-(declare-function eglot-signature-eldoc-function "eglot")
-
 
 (use-package eglot-signature-eldoc-talkative
   :ensure eglot-signature-eldoc-talkative
@@ -279,13 +251,42 @@
   (advice-add #'eglot-signature-eldoc-function
               :override #'eglot-signature-eldoc-talkative))
 
+(use-package lsp-bridge
+  :after (evil)
+  :defines
+  lsp-bridge-show-documentation
+  lsp-bridge-signature-show-with-frame
+  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
+                         :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
+                         :build (:not compile))
+  :init
+  (global-lsp-bridge-mode)
+  :config
+  (setq lsp-bridge-enable-hover-diagnostic t
+        acm-enable-doc t
+        acm-enable-doc-markdown-render t
+        lsp-bridge-enable-inlay-hint t
+        lsp-bridge-signature-show-function 'lsp-bridge-signature-show-with-frame)
+  :bind
+  (:map lsp-bridge-mode-map
+        ("C-c c a" . lsp-bridge-code-action)
+        ("C-c c r" . lsp-bridge-rename)
+        ("C-c c f" . lsp-bridge-code-format))
+  :os/bind ((:map (lsp-bridge-mode-map . normal)
+                  ("gr" . lsp-bridge-find-references)
+                  ("gd" . lsp-bridge-find-def)
+                  ("K" . lsp-bridge-show-documentation))))
+
+
+(declare-function eglot-signature-eldoc-function "eglot")
+
 (use-package jarchive
   :ensure t
   :defines
   jarchive-setup
   :after eglot
-  :config
-  (jarchive-setup))
+  :hook
+  ((clojure-mode java-ts-mode java-mode) jarchive-setup))
 
 ;;; HIPPY-EXPAND
 (setq hippie-expand-try-functions-list
