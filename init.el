@@ -168,8 +168,8 @@ See 'use-package-normalize/:os/bind' for docs."
   (gcmh-mode 1))
 
 ;;;; per https://github.com/emacs-lsp/lsp-mode#performance
-(setq read-process-output-max (* 2 1024 1024)) ;; 2mb
-(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 10 1024 1024)) ;; 10mb
+(setq gc-cons-threshold 200000000)
 
 
 ;;; EXEC-PATH-FROM-SHELL
@@ -217,7 +217,8 @@ See 'use-package-normalize/:os/bind' for docs."
     "css-in-js-mode"
     "tsx-mode"
     "ai"
-    "spelling")
+    "spelling"
+    "3e")
   "List of modules to load on startup.")
 
 (dolist (pkg os/module-list)
