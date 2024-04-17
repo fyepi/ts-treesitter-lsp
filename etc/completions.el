@@ -260,15 +260,25 @@
   :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
                          :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
                          :build (:not compile))
+  :custom
+  (acm-enable-yas nil)
+  (acm-enable-icon nil)
+  (acm-enable-tabnine nil)
+  (acm-enable-codeium nil)
+  (acm-enable-seach-file-words nil)
+  (acm-doc-frame-max-lines 25)
+  (lsp-bridge-nix-lsp-server "nil")
+  (lsp-bridge-enable-hover-diagnostic t)
+  (lsp-bridge-code-action-enable-popup-menu nil)
+  (lsp-bridge-enable-inlay-hint nil)
+  (lsp-bridge-inlay-hint-overlays '())
   :init
   (global-lsp-bridge-mode)
+  (let ((filtered-list (cl-delete 'lsp-bridge-not-match-hide-characters lsp-bridge-completion-popup-predicates)))
+    (setq lsp-bridge-completion-popup-predicates filtered-list))
   :config
-  (setq lsp-bridge-enable-hover-diagnostic t
-        acm-enable-doc t
-        acm-enable-doc-markdown-render t
-        lsp-bridge-enable-inlay-hint t
-        lsp-bridge-signature-show-function 'message
-        lsp-bridge-epc-debug t)
+  (setq lsp-bridge-signature-show-function 'message
+        lsp-bridge-epc-debug nil)
   :bind
   (:map lsp-bridge-mode-map
         ("C-c c a" . lsp-bridge-code-action)
