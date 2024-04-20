@@ -12,11 +12,12 @@
   :defines
   flymake-mode
   :bind
-  ("M-n"     . flymake-goto-next-error)
-  ("M-p"     . flymake-goto-prev-error)
-  ("<f12>"   . flymake-goto-next-error)
-  ("C-<f12>" . flymake-goto-next-error)
-  ("C-c !"   . flymake-show-buffer-diagnostics))
+  (:map flymake-mode-map
+        ("M-n"     . flymake-goto-next-error)
+        ("M-p"     . flymake-goto-prev-error)
+        ("C-c !"   . flymake-show-buffer-diagnostics)))
+
+
 
 (use-package flymake-collection
   :ensure flymake-collection
@@ -30,26 +31,26 @@
   :after (flymake)
   :hook (css-mode . flymake-css-load))
 
-(use-package flymake-cursor
-  :ensure flymake-cursor
-  :after (flymake)
-  :demand t
-  :custom
-  (flymake-cursor-error-display-delay 0.1)
-  (flymake-cursor-number-of-errors-to-display nil)
-  (flymake-cursor-auto-enable t))
+;; (use-package flymake-cursor
+;;   :ensure flymake-cursor
+;;   :after (flymake)
+;;   :demand t
+;;   :custom
+;;   (flymake-cursor-error-display-delay 0.1)
+;;   (flymake-cursor-number-of-errors-to-display nil)
+;;   (flymake-cursor-auto-enable t))
 
-(use-package flymake-diagnostic-at-point
-  :ensure flymake-diagnostic-at-point
-  :after (flymake)
-  :defines
-  flymake-diagnostic-at-point-error-prefix
-  :hook
-  (flymake-mode . flymake-diagnostic-at-point-mode)
-  :custom
-  (flymake-diagnostic-at-point-timer-delay 0.1)
-  (flymake-diagnostic-at-point-display-diagnostic-function
-   #'os/display-flymake-diagnostic-in-popup-and-minibuffer))
+;; (use-package flymake-diagnostic-at-point
+;;   :ensure flymake-diagnostic-at-point
+;;   :after (flymake)
+;;   :defines
+;;   flymake-diagnostic-at-point-error-prefix
+;;   :hook
+;;   (flymake-mode . flymake-diagnostic-at-point-mode)
+;;   :custom
+;;   (flymake-diagnostic-at-point-timer-delay 0.1)
+;;   (flymake-diagnostic-at-point-display-diagnostic-function
+;;    #'os/display-flymake-diagnostic-in-popup-and-minibuffer))
 
 
 
@@ -95,11 +96,25 @@
   :hook
   (yaml-mode . flymake-yamllint-setup))
 
-(declare-function popup-tip "popup")
-(defun os/display-flymake-diagnostic-in-popup-and-minibuffer (text)
-  "Display flymake diagonstic TEXT in minibuffer and popup."
-  (popup-tip (concat flymake-diagnostic-at-point-error-prefix text))
-  (message (concat flymake-diagnostic-at-point-error-prefix text)))
+;; (declare-function popup-tip "popup")
+;; (defun os/display-flymake-diagnostic-in-popup-and-minibuffer (text)
+;;   "Display flymake diagonstic TEXT in minibuffer and popup."
+;;   (popup-tip (concat flymake-diagnostic-at-point-error-prefix text))
+;;   (message (concat flymake-diagnostic-at-point-error-prefix text)))
+
+(use-package sideline
+  :ensure t)
+
+(use-package sideline-flymake
+  :defines
+  sideline-flymake-display-mode
+  sideline-backends-right
+  :ensure t
+  :hook (flymake-mode . sideline-mode)
+  :init
+  (setq sideline-flymake-display-mode 'point) ; 'point to show errors only on point
+                                        ; 'line to show errors on the current line
+  (setq sideline-backends-right '(sideline-flymake)))
 
 (provide 'linters)
 ;;; linters.el ends here

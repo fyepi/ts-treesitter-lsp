@@ -523,11 +523,7 @@
   :defines
   markdown-mode-map
   :magic
-  "\\.mr?kd"
-  :bind
-  (:map markdown-mode-map
-        ("M-n" . flymake-goto-next-error)
-        ("M-p" . flymake-goto-prev-error)))
+  "\\.mr?kd")
 
 (use-package html-to-markdown
   :ensure html-to-markdown
