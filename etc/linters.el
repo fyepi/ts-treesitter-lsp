@@ -8,7 +8,6 @@
 (use-package flymake
   :ensure flymake
   :demand
-  :hook (prog-mode . flymake-mode)
   :defines
   flymake-mode
   :bind
@@ -55,11 +54,11 @@
 
 
 ;; Flymake backend for lsp-bridge
-(use-package flymake-bridge
-  :straight '(flymake-bridge :type git :host github :repo "liuyinz/flymake-bridge"
-                             :files (:defaults "*.el" )
-                             :build (:not compile))
-  :hook (lsp-bridge-mode . flymake-bridge-setup))
+;; (use-package flymake-bridge
+;;   :straight '(flymake-bridge :type git :host github :repo "liuyinz/flymake-bridge"
+;;                              :files (:defaults "*.el" )
+;;                              :build (:not compile))
+;;   :hook (lsp-bridge-mode . flymake-bridge-setup))
 
 
 (use-package flymake-json

@@ -261,6 +261,9 @@
                          :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
                          :build (:not compile))
   :custom
+  (lsp-bridge-enable-debug nil)
+  (lsp-bridge-enable-log nil)
+  (lsp-bridge-enable-completion-in-string t)
   (acm-enable-yas nil)
   (acm-enable-icon nil)
   (acm-enable-tabnine nil)
@@ -278,12 +281,20 @@
     (setq lsp-bridge-completion-popup-predicates filtered-list))
   :config
   (setq lsp-bridge-signature-show-function 'message
-        lsp-bridge-epc-debug nil)
+        lsp-bridge-epc-debug nil
+        acm-candidate-match-function #'orderless-flex
+        ;; lsp-bridge-user-langserver-dir "~/.emacs.d/lsp/server"
+        ;; lsp-bridge-user-multiserver-dir "~/.emacs.d/lsp/multiserver")
+        )
+  ;; (add-to-list 'lsp-bridge-multi-lang-server-extension-list '(("ts" "tsx") . "typescript_eslint_tailwind" ))
   :bind
   (:map lsp-bridge-mode-map
         ("C-c c a" . lsp-bridge-code-action)
         ("C-c c r" . lsp-bridge-rename)
-        ("C-c c f" . lsp-bridge-code-format))
+        ("C-c c f" . lsp-bridge-code-format)
+        ("C-c !" . lsp-bridge-diagnostic-list)
+        ("M-n" . lsp-bridge-diagnostic-jump-next)
+        ("M-p" . lsp-bridge-diagnostic-jump-prev))
   :os/bind ((:map (lsp-bridge-mode-map . normal)
                   ("gr" . lsp-bridge-find-references)
                   ("gd" . lsp-bridge-find-def)

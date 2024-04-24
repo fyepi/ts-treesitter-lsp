@@ -32,6 +32,8 @@
 (setq kept-old-versions 2)
 (setq version-control t)
 
+(setq scroll-margin 3)
+
 
 ;;; BUFFER-MODE
 (defun os/set-up-buffer-mode ()
