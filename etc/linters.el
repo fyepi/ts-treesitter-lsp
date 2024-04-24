@@ -10,6 +10,7 @@
   :demand
   :defines
   flymake-mode
+  :hook (prog-mode . flymake-mode)
   :bind
   (:map flymake-mode-map
         ("M-n"     . flymake-goto-next-error)
@@ -30,76 +31,24 @@
   :after (flymake)
   :hook (css-mode . flymake-css-load))
 
-;; (use-package flymake-cursor
-;;   :ensure flymake-cursor
-;;   :after (flymake)
-;;   :demand t
-;;   :custom
-;;   (flymake-cursor-error-display-delay 0.1)
-;;   (flymake-cursor-number-of-errors-to-display nil)
-;;   (flymake-cursor-auto-enable t))
-
-;; (use-package flymake-diagnostic-at-point
-;;   :ensure flymake-diagnostic-at-point
-;;   :after (flymake)
-;;   :defines
-;;   flymake-diagnostic-at-point-error-prefix
-;;   :hook
-;;   (flymake-mode . flymake-diagnostic-at-point-mode)
-;;   :custom
-;;   (flymake-diagnostic-at-point-timer-delay 0.1)
-;;   (flymake-diagnostic-at-point-display-diagnostic-function
-;;    #'os/display-flymake-diagnostic-in-popup-and-minibuffer))
-
-
-
-;; Flymake backend for lsp-bridge
-;; (use-package flymake-bridge
-;;   :straight '(flymake-bridge :type git :host github :repo "liuyinz/flymake-bridge"
-;;                              :files (:defaults "*.el" )
-;;                              :build (:not compile))
-;;   :hook (lsp-bridge-mode . flymake-bridge-setup))
-
-
 (use-package flymake-json
   :ensure flymake-json
   :after flymake
   :hook
-  (js-mode . flymake-json-load)
-  (typescript-ts-mode . flymake-json-load)
-  (tsx-ts-mode . flymake-json-load)
-  (json-mode . flymake-json-load)
-  (web-mode . flymake-json-load))
+  ((json-mode json-ts-mode) . flymake-json-load))
 
-(use-package flymake-ruff
-  :ensure flymake-ruff
-  :after (flymake)
-  :hook
-  (python-base-mode . flymake-ruff-load))
-
-(use-package flymake-sass
-  :ensure flymake-sass
-  :after (flymake)
-  :hook
-  (sass-mode . flymake-sass-load))
 
 (use-package flymake-shellcheck
   :ensure nil ;; included in Emacs 29
   :after (flymake)
   :hook
-  (sh-mode . flymake-shellcheck-load))
+  ((sh-mode sh-ts-mode) . flymake-shellcheck-load))
 
 (use-package flymake-yamllint
   :ensure flymake-yamllint
   :after (flymake)
   :hook
   (yaml-mode . flymake-yamllint-setup))
-
-;; (declare-function popup-tip "popup")
-;; (defun os/display-flymake-diagnostic-in-popup-and-minibuffer (text)
-;;   "Display flymake diagonstic TEXT in minibuffer and popup."
-;;   (popup-tip (concat flymake-diagnostic-at-point-error-prefix text))
-;;   (message (concat flymake-diagnostic-at-point-error-prefix text)))
 
 (use-package sideline
   :ensure t)

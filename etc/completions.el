@@ -127,6 +127,7 @@
   )
 
 
+
 ;;; CORFU
 (use-package corfu
   :ensure corfu
@@ -165,8 +166,8 @@
   (corfu-quit-no-match 'separator)
   (confu-preview-current 'insert)
   :config
-  (global-corfu-mode 0)
-  (corfu-popupinfo-mode 0))
+  (global-corfu-mode 1)
+  (corfu-popupinfo-mode 1))
 
 
 ;;; EGLOT
@@ -252,56 +253,117 @@
               :override #'eglot-signature-eldoc-talkative))
 
 
-(use-package lsp-bridge
-  :after (evil)
-  :defines
-  lsp-bridge-show-documentation
-  lsp-bridge-signature-show-with-frame
-  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
-                         :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
-                         :build (:not compile))
-  :custom
-  (lsp-bridge-enable-debug nil)
-  (lsp-bridge-enable-log nil)
-  (lsp-bridge-enable-completion-in-string t)
-  (acm-enable-yas nil)
-  (acm-enable-icon nil)
-  (acm-enable-tabnine nil)
-  (acm-enable-codeium nil)
-  (acm-enable-seach-file-words nil)
-  (acm-doc-frame-max-lines 25)
-  (lsp-bridge-nix-lsp-server "nil")
-  (lsp-bridge-enable-hover-diagnostic t)
-  (lsp-bridge-code-action-enable-popup-menu nil)
-  (lsp-bridge-enable-inlay-hint nil)
-  (lsp-bridge-inlay-hint-overlays '())
-  :init
-  (global-lsp-bridge-mode)
-  (let ((filtered-list (cl-delete 'lsp-bridge-not-match-hide-characters lsp-bridge-completion-popup-predicates)))
-    (setq lsp-bridge-completion-popup-predicates filtered-list))
-  :config
-  (setq lsp-bridge-signature-show-function 'message
-        lsp-bridge-epc-debug nil
-        acm-candidate-match-function #'orderless-flex
-        ;; lsp-bridge-user-langserver-dir "~/.emacs.d/lsp/server"
-        ;; lsp-bridge-user-multiserver-dir "~/.emacs.d/lsp/multiserver")
-        )
-  ;; (add-to-list 'lsp-bridge-multi-lang-server-extension-list '(("ts" "tsx") . "typescript_eslint_tailwind" ))
-  :bind
-  (:map lsp-bridge-mode-map
-        ("C-c c a" . lsp-bridge-code-action)
-        ("C-c c r" . lsp-bridge-rename)
-        ("C-c c f" . lsp-bridge-code-format)
-        ("C-c !" . lsp-bridge-diagnostic-list)
-        ("M-n" . lsp-bridge-diagnostic-jump-next)
-        ("M-p" . lsp-bridge-diagnostic-jump-prev))
-  :os/bind ((:map (lsp-bridge-mode-map . normal)
-                  ("gr" . lsp-bridge-find-references)
-                  ("gd" . lsp-bridge-find-def)
-                  ("K" . lsp-bridge-popup-documentation))))
-
-
 (declare-function eglot-signature-eldoc-function "eglot")
+
+
+;; LSP & companions used for clojure + Java as experience is better
+;; For rest, use eglot
+(use-package lsp-mode
+  :ensure t
+  :hook ((lsp-mode . lsp-diagnostics-mode)
+         (lsp-mode . lsp-enable-which-key-integration)
+         ((tsx-ts-mode typescript-ts-mode tsx-mode) . lsp-deferred))
+  :custom
+  (lsp-keymap-prefix "C-c c")
+  (lsp-completion-provider :none) ;; we use Corfu
+  (lsp-diagnostics-provider :flymake)
+  (lsp-session-file (locate-user-emacs-file ".lsp-session"))
+  (lsp-log-io nil)
+  (lsp-keep-workspace-alive nil)
+  (lsp-idle-delay 0.5)
+  ;; core
+  (lsp-enable-xref t)
+  (lsp-auto-configure nil)
+  (lsp-eldoc-enable-hover t)
+  (lsp-enable-dap-auto-configure nil)
+  (lsp-enable-file-watchers nil)
+  (lsp-enable-folding nil)
+  (lsp-enable-imenu t)
+  (lsp-enable-indentation nil)
+  (lsp-enable-links t)
+  (lsp-enable-on-type-formatting nil)
+  (lsp-enable-suggest-server-download nil)
+  (lsp-enable-symbol-highlighting t)
+  (lsp-enable-text-document-color nil)
+  ;; completion
+  (lsp-completion-enable t)
+  (lsp-completion-enable-additional-text-edit t)
+  (lsp-enable-snippet t)
+  (lsp-completion-show-kind t)
+  ;; headerline
+  (lsp-headerline-breadcrumb-enable t)
+  (lsp-headerline-breadcrumb-enable-diagnostics nil)
+  (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+  (lsp-headerline-breadcrumb-icons-enable nil)
+  ;; modeline
+  (lsp-modeline-code-actions-enable t)
+  (lsp-modeline-diagnostics-enable t)
+  (lsp-modeline-workspace-status-enable nil)
+  (lsp-signature-doc-lines 1)
+  ;; lens
+  (lsp-lens-enable nil)
+  ;; semantic
+  (lsp-semantic-tokens-enable nil)
+  :init
+  (setq lsp-use-plists t))
+
+(use-package lsp-completion
+  :no-require
+  :hook ((lsp-mode . lsp-completion-mode-maybe))
+  :commands (lsp-completion-mode)
+  :preface
+  (defun lsp-completion-mode-maybe ()
+    (unless (bound-and-true-p cider-mode)
+      (lsp-completion-mode 1))))
+
+
+(use-package lsp-clojure
+  :demand t
+  :after lsp-mode
+  :hook
+  (((clojure-mode clojurec-mode clojurescript-mode) . lsp-deferred)
+   (cider-mode . cider-toggle-lsp-completion-maybe))
+  :preface
+  (defun cider-toggle-lsp-completion-maybe ()
+    (lsp-completion-mode (if (bound-and-true-p cider-mode) -1 1))))
+
+
+(use-package lsp-java
+  :ensure t
+  :after lsp-mode
+  :hook (java-mode . lsp))
+
+(use-package lsp-metals
+  :ensure t
+  :after lsp-mode
+  :hook (scala-mode . lsp)
+  :custom
+  (lsp-metals-server-args
+   '("-J-Dmetals.allow-multiline-string-formatting=off")))
+
+(use-package lsp-tailwindcss
+  :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
+  :init (setq lsp-tailwindcss-add-on-mode t)
+  :config
+  (dolist (tw-major-mode
+           '(css-mode
+             css-ts-mode
+             typescript-mode
+             typescript-ts-mode
+             tsx-mode
+             tsx-ts-mode
+             js2-mode
+             js-ts-mode))
+    (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
+
+(use-package lsp-ui
+  :ensure t
+  :after lsp-mode)
+
+(use-package lsp-eslint
+  :demand t
+  :after lsp-mode)
+
 
 (use-package jarchive
   :ensure t
