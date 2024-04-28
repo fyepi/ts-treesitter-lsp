@@ -51,7 +51,7 @@
 
 (use-package wucuo
   :straight t
-  :hook ((prog-mode text-mode) wucuo-start))
+  :hook (text-mode . wucuo-start))
 
 (provide 'spelling)
 ;;; spelling.el ends here

@@ -154,6 +154,12 @@ and ARGS will be any args it originally got."
         (os/nvm os/node-version)
         (message "Set up to use node version %s" os/node-version))))
 
+(defun os/apos ()
+  "Insert &aps; in html."
+  (interactive)
+  (insert "&apos;"))
+
+
 (defun os/nvm (version)
   "Reconfigure $PATH and function `exec-path' to use a particular Node.js VERSION.
 \(Via nvm.) When called with a prefx argument, use the highest

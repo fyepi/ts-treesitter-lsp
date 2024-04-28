@@ -129,135 +129,53 @@
 
 
 ;;; CORFU
+
 (use-package corfu
-  :ensure corfu
-  :commands
-  corfu-complete
-  corfu-popupinfo-mode
-  corfu-quick-complete
-  global-corfu-mode
-  :defines
-  corfu-map
-  corfu-margin-formatters
-  :bind
-  (:map corfu-map
-        ("C-n" . corfu-next)
-        ("C-p" . corfu-previous)
-        ("<escape>" . corfu-quit)
-        ("<return>" . corfu-insert)
-        ("M-a" . corfu-popupinfo-beginning)
-        ("M-d" . corfu-popupinfo-documentation)
-        ("M-e" . corfu-popupinfo-end)
-        ("M-l" . corfu-info-location)
-        ("M-n" . corfu-popupinfo-scroll-up)
-        ("M-p" . corfu-popupinfo-scroll-down)
-        ("SPC" . corfu-insert-separator))
+  :ensure t
+  :bind ( :map corfu-map
+          ("TAB" . corfu-next)
+          ([tab] . corfu-next)
+          ("S-TAB" . corfu-previous)
+          ([backtab] . corfu-previous)
+          ([remap completion-at-point] . corfu-complete)
+          ("RET" . corfu-complete-and-quit)
+          ("<return>" . corfu-complete-and-quit))
+  :commands (corfu-quit)
   :custom
-  (corfu-auto t)
-  (corfu-auto-prefix 2)
-  (corfu-auto-delay 0.0)
-  (corfu-min-width 80)
-  (corfu-max-width corfu-min-width)       ; Always have the same width
-  (corfu-count 10)
+  (corfu-cycle t)
+  (corfu-preselect-first t)
   (corfu-scroll-margin 4)
-  (corfu-popupinfo-delay 0.0)
-  (corfu-quit-at-boundary 'separator)
-  (corfu-separtor ?\s) ;; space
-  (corfu-quit-no-match 'separator)
-  (confu-preview-current 'insert)
+  (corfu-quit-no-match t)
+  (corfu-quit-at-boundary t)
+  (corfu-max-width 100)
+  (corfu-min-width 42)
+  (corfu-count 9)
+  ;; should be configured in the `indent' package, but `indent.el'
+  ;; doesn't provide the `indent' feature.
+  (tab-always-indent 'complete)
   :config
-  (global-corfu-mode 1)
-  (corfu-popupinfo-mode 1))
+  (defun corfu-complete-and-quit ()
+    (interactive)
+    (corfu-complete)
+    (corfu-quit))
+  :hook (after-init . global-corfu-mode))
+
+(use-package corfu-popupinfo
+  :bind ( :map corfu-popupinfo-map
+          ("M-p" . corfu-popupinfo-scroll-down)
+          ("M-n" . corfu-popupinfo-scroll-up))
+  :hook (corfu-mode . corfu-popupinfo-mode)
+  :custom-face
+  (corfu-popupinfo ((t :height 1.0))))
 
 
-;;; EGLOT
-(use-package eglot
-  :ensure eglot
-  :defines
-  eglot-server-programs
-  eglot-events-buffer-size
-  :functions
-  eglot-signature-eldoc-function
-  :hook (((prisma-ts-mode) . eglot-ensure))
-  ;; https://lists.gnu.org/archive/html/emacs-devel/2023-02/msg00841.html
-  ;; (eglot-managed-mode . eglot-inlay-hints-mode))
-  :bind
-  (:map eglot-mode-map
-        ("C-c c a" . eglot-code-actions)
-        ("C-c c o" . eglot-code-actions-organize-imports)
-        ("C-c c r" . eglot-rename)
-        ("C-c c f" . eglot-format))
-  :custom
-  (eglot-connect-timeout 100)
-  (eglot-autoshutdown t)
-  (eglot-sync-connect nil)
-  (eglot-events-buffer-size 0)
-  (eglot-ignored-server-capabilities
-   '(:documentFormattingProvider
-     :documentRangeFormattingProvider
-     :documentOnTypeFormattingProvider
-     :colorProvider
-     :foldingRangeProvider))
+(use-package cape
+  :ensure t
+  :after corfu
   :config
-  ;; use typescript-languange-server instead of the eglot default --
-  ;; provides better support for external deps
-  ;;
-  ;; note: have to use `equal' as the comparator function because of
-  ;; the list-ness of the key in the alist
-  (setf (alist-get '(js2-mode typescript-ts-mode) eglot-server-programs "" nil 'equal)
-        '("typescript-language-server" "--stdio"))
+  (setq completion-at-point-functions '(cape-file)))
 
-
-  (setf (alist-get '(prisma-ts-mode) eglot-server-programs "" nil 'equal)
-        '("prisma-language-server" "--stdio"))
-
-  (setf (alist-get '(clojure-mode clojurec-mode clojurescript-mode) eglot-server-programs "" nil 'equal)
-        '("clojure-lsp"))
-
-  ;; Make Pandas play well with Pyright
-  ;;; https://www.reddit.com/r/emacs/comments/swqr6o/how_to_get_pyright_complete_pandas/
-  (setq-default eglot-workspace-configuration
-                '((:pyright . ((useLibraryCodeForTypes . t)))))
-
-  ;; from
-  ;; https://www.reddit.com/r/emacs/comments/1447fy2/looking_for_help_in_improving_typescript_eglot/
-  ;; -- speed up?
-  (declare-function jsonrpc--log-event "jsonrpc")
-  (fset #'jsonrpc--log-event #'ignore))
-
-;; add inlay hints to typescript
-  ;;; https://www.reddit.com/r/emacs/comments/11bqzvk/emacs29_and_eglot_inlay_hints/
-;; (add-to-list
-;;  'eglot-server-programs
-;;  '((js2-mode tsx-mode tsx-ts-mode typescript-ts-mode)
-;;    "typescript-language-server" "--stdio"
-;;    :initializationOptions
-;;    (:preferences
-;;     (
-;;      :includeInlayParameterNameHints "all"
-;;      :includeInlayParameterNameHintsWhenArgumentMatchesName t
-;;      :includeInlayFunctionParameterTypeHints t
-;;      :includeInlayVariableTypeHints t
-;;      :includeInlayVariableTypeHintsWhenTypeMatchesName t
-;;      :includeInlayPropertyDeclarationTypeHints t
-;;      :includeInlayFunctionLikeReturnTypeHints t
-;;      :includeInlayEnumMemberValueHints t)))))
-
-
-(use-package eglot-signature-eldoc-talkative
-  :ensure eglot-signature-eldoc-talkative
-  :functions
-  eglot-signature-eldoc-talkative
-  :config
-  (advice-add #'eglot-signature-eldoc-function
-              :override #'eglot-signature-eldoc-talkative))
-
-
-(declare-function eglot-signature-eldoc-function "eglot")
-
-
-;; LSP & companions used for clojure + Java as experience is better
-;; For rest, use eglot
+;; LSP
 (use-package lsp-mode
   :ensure t
   :hook ((lsp-mode . lsp-diagnostics-mode)
@@ -266,16 +184,16 @@
   :custom
   (lsp-keymap-prefix "C-c c")
   (lsp-completion-provider :none) ;; we use Corfu
-  (lsp-diagnostics-provider :flymake)
+  (lsp-diagnostics-provider :flycheck)
   (lsp-session-file (locate-user-emacs-file ".lsp-session"))
   (lsp-log-io nil)
   (lsp-keep-workspace-alive nil)
   (lsp-idle-delay 0.5)
   ;; core
   (lsp-enable-xref t)
-  (lsp-auto-configure nil)
+  (lsp-auto-configure t)
   (lsp-eldoc-enable-hover t)
-  (lsp-enable-dap-auto-configure nil)
+  (lsp-enable-dap-auto-configure t)
   (lsp-enable-file-watchers nil)
   (lsp-enable-folding nil)
   (lsp-enable-imenu t)
@@ -296,16 +214,17 @@
   (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
   (lsp-headerline-breadcrumb-icons-enable nil)
   ;; modeline
-  (lsp-modeline-code-actions-enable t)
-  (lsp-modeline-diagnostics-enable t)
+  (lsp-modeline-code-actions-enable nil)
+  (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-workspace-status-enable nil)
   (lsp-signature-doc-lines 1)
   ;; lens
-  (lsp-lens-enable nil)
+  (lsp-lens-enable t)
   ;; semantic
   (lsp-semantic-tokens-enable nil)
   :init
   (setq lsp-use-plists t))
+
 
 (use-package lsp-completion
   :no-require
@@ -320,18 +239,27 @@
 (use-package lsp-clojure
   :demand t
   :after lsp-mode
-  :hook
-  (((clojure-mode clojurec-mode clojurescript-mode) . lsp-deferred)
-   (cider-mode . cider-toggle-lsp-completion-maybe))
+  :hook (cider-mode . cider-toggle-lsp-completion-maybe)
   :preface
   (defun cider-toggle-lsp-completion-maybe ()
     (lsp-completion-mode (if (bound-and-true-p cider-mode) -1 1))))
 
+(use-package lsp-clojure
+  :no-require
+  :hook ((clojure-mode
+          clojurec-mode
+          clojurescript-mode)
+         . lsp-deferred))
 
 (use-package lsp-java
   :ensure t
-  :after lsp-mode
-  :hook (java-mode . lsp))
+  :demand t
+  :after lsp-mode)
+
+(use-package lsp-java
+  :no-require
+  :hook (java-mode . lsp-deferred))
+
 
 (use-package lsp-metals
   :ensure t
