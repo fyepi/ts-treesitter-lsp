@@ -26,6 +26,8 @@
 (use-package cider
   :ensure t
   :diminish cider-mode
+  :bind (:map cider-mode-map
+              ("M-¬" . cider-format-buffer))
   :config
   (setq cider-preferred-build-tool 'clojure-cli
         ;; ~make sure we can always debug nrepl issues~

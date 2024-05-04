@@ -35,6 +35,8 @@
 (setq scroll-margin 3)
 
 
+(add-hook 'prog-mode (lambda () (subword-mode 1)))
+
 ;;; BUFFER-MODE
 (defun os/set-up-buffer-mode ()
   "My customizations for `Buffer-menu-mode'."
