@@ -411,5 +411,15 @@
   :config
   (yas-global-mode 1))
 
+(use-package copilot
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :ensure t
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("C-<tab>" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion)
+              ("S-C-TAB" . 'copilot-accept-completion-by-word)
+              ("S-C-<tab>" . 'copilot-accept-completion-by-word)))
+
 (provide 'completions)
 ;;; completions.el ends here
