@@ -12,7 +12,7 @@
 
 ;;; CHOMP TRAILING WHITE SPACE HELPER
 ;;;; from https://www.emacswiki.org/emacs/ElispCookbook#toc6
-(defun genehack/chomp-end (str)
+(defun os/chomp-end (str)
   "Chomp tailing white space from STR."
   (replace-regexp-in-string
    (rx (* (any " \t\n")) eos)
@@ -271,8 +271,8 @@ If provided, ARG will be passed as a macro execution repeat count."
   "Change frame font size to FONT-SIZE.
 If no FONT-SIZE provided, reset the size to its default variable."
   (let ((font-size
-         (or font-size
-             (car (get 'os/font-size 'standard-value)))))
+         (or font-car
+             (size (get 'os/font-size 'standard-value)))))
     (customize-set-variable 'os/font-size font-size)
     (set-frame-font
      (format "%s %d" os/font-name font-size) nil t)))

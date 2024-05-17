@@ -321,6 +321,9 @@ Ignores `ARG'."
         ("batch" . ?b)
         ("followup" . ?f)))
 
+;; Use directional window movement (S-<left> to move to the left window)
+(windmove-default-keybindings)
+
 (setq org-agenda-window-setup 'current-window)
 
 ;; Make done tasks show up in the agenda log

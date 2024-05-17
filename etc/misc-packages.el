@@ -614,5 +614,8 @@
   (smartparens-global-mode 1)
   (show-smartparens-global-mode t))
 
+(use-package sicp
+  :ensure t)
+
 (provide 'misc-packages)
 ;;; misc-packages.el ends here

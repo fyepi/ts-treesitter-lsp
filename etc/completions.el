@@ -414,6 +414,7 @@
 (use-package copilot
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :ensure t
+  :config (setq copilot-indent-offset-warning-disable t)
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
               ("C-<tab>" . 'copilot-accept-completion)
