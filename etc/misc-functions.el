@@ -88,42 +88,6 @@ and sub-url to insert when building URL to file and line.")
     (with-output-to-temp-buffer "*git blame*" (princ blame-out))))
 (bind-key "C-c l" #'os/git-blame-for-line)
 
-;;;; from http://whattheemacsd.com/setup-magit.el-01.html
-(defun os/magit-fullscreen (orig-fxn &rest args)
-  "Full screen `magit-status'.
-When installed via `advice-add', ORIG-FXN will be `magit-status'
-and ARGS will be any args it originally got."
-  (window-configuration-to-register :magit-fullscreen)
-  (apply orig-fxn args)
-  (delete-other-windows))
-(advice-add 'magit-status :around #'os/magit-fullscreen)
-
-(defun os/magit-key (arg)
-  "Call `magit-status', or with ARG call `os/magit-status-with-prompt'."
-  (interactive "P")
-  (if arg
-      (call-interactively 'os/magit-status-with-prompt)
-    (call-interactively 'magit-status)))
-(bind-key "C-c C-g" #'os/magit-key)
-
-(defun os/magit-quit-session ()
-  "Restore the previous window configuration and kill the magit buffer."
-  (interactive)
-  (kill-buffer)
-  (if (assoc :magit-fullscreen register-alist)
-      (jump-to-register :magit-fullscreen)))
-
-(if os/git-executable
-    (defun os/magit-status-with-prompt (dir)
-      "Prompt for git repo path then call magit-status on it."
-      (interactive "Dgit repo: ")
-      (magit-status-setup-buffer dir))
-  (defun os/magit-status-with-prompt ()
-    "Stub function for when git isn't available"
-    (interactive)
-    (message "Unable to find a git binary; magit is unavailable.")))
-
-
 
 ;;; JAVASCRIPT / NODE / TYPESCRIPT STUFF
 (declare-function nvm--installed-versions "nvm")

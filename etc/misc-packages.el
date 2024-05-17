@@ -309,24 +309,8 @@
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
-
-;;; MAGIT
 (use-package magit
-  :ensure magit
-  :if os/git-executable
-  :commands
-  magit-status
-  :defines
-  magit-status-mode-map
-  :functions
-  magit-get
-  magit-get-all
-  magit-get-current-branch
-  magit-git-string
-  magit-status-setup-buffer
-  :bind
-  (:map magit-status-mode-map ("q" . os/magit-quit-session)))
-
+  :ensure t)
 
 ;;; MARKDOWN
 (use-package markdown-mode
