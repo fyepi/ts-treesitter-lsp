@@ -383,8 +383,9 @@ Ignores `ARG'."
 
 ;;; PAREN MATCH
 (use-package paren
+  :defines show-paren-style
   :custom
-  (show-paren-style 'expression)
+  (show-paren-style 'parenthesis)
   :config
   (setq show-paren-context-when-offscreen 'overlay)
   (show-paren-mode t))

@@ -128,59 +128,50 @@
 
 
 
-;;; CORFU
-
+;;;; Code Completion
 (use-package corfu
   :ensure t
-  :bind ( :map corfu-map
-          ("TAB" . corfu-next)
-          ([tab] . corfu-next)
-          ("S-TAB" . corfu-previous)
-          ([backtab] . corfu-previous)
-          ([remap completion-at-point] . corfu-complete)
-          ("RET" . corfu-complete-and-quit)
-          ("<return>" . corfu-complete-and-quit))
-  :commands (corfu-quit)
+  ;; Optional customizations
   :custom
-  (corfu-cycle t)
-  (corfu-preselect-first t)
-  (corfu-scroll-margin 4)
-  (corfu-quit-no-match t)
-  (corfu-quit-at-boundary t)
-  (corfu-max-width 100)
-  (corfu-min-width 42)
-  (corfu-count 9)
-  ;; should be configured in the `indent' package, but `indent.el'
-  ;; doesn't provide the `indent' feature.
-  (tab-always-indent 'complete)
+  (corfu-cycle t)                 ; Allows cycling through candidates
+  (corfu-auto t)                  ; Enable auto completion
+  (corfu-auto-prefix 2)
+  (corfu-auto-delay 0)
+  (corfu-popupinfo-delay '(0.5 . 0.2))
+  (corfu-preview-current 'insert) ; insert previewed candidate
+  (corfu-preselect 'prompt)
+  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  :bind (:map corfu-map
+              ("M-SPC"      . corfu-insert-separator)
+              ("TAB"        . corfu-next)
+              ([tab]        . corfu-next)
+              ("S-TAB"      . corfu-previous)
+              ([backtab]    . corfu-previous)
+              ("S-<return>" . corfu-insert)
+              ("RET"        . nil))
+
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+  (corfu-popupinfo-mode) ; Popup completion info
   :config
-  (defun corfu-complete-and-quit ()
-    (interactive)
-    (corfu-complete)
-    (corfu-quit))
-  :hook (after-init . global-corfu-mode))
-
-(use-package corfu-popupinfo
-  :bind ( :map corfu-popupinfo-map
-          ("M-p" . corfu-popupinfo-scroll-down)
-          ("M-n" . corfu-popupinfo-scroll-up))
-  :hook (corfu-mode . corfu-popupinfo-mode)
-  :custom-face
-  (corfu-popupinfo ((t :height 1.0))))
+  (add-hook 'eshell-mode-hook
+            (lambda () (setq-local corfu-quit-at-boundary t
+                                   corfu-quit-no-match t
+                                   corfu-auto nil)
+              (corfu-mode))
+            nil
+            t))
 
 
-(use-package cape
-  :ensure t
-  :after corfu
-  :config
-  (setq completion-at-point-functions '(cape-file)))
 
 ;; LSP
 (use-package lsp-mode
   :ensure t
   :hook ((lsp-mode . lsp-diagnostics-mode)
          (lsp-mode . lsp-enable-which-key-integration)
-         ((tsx-ts-mode typescript-ts-mode tsx-mode) . lsp-deferred))
+         ((tsx-ts-mode typescript-ts-mode tsx-mode js-ts-mode) . lsp-deferred))
   :custom
   (lsp-keymap-prefix "C-c c")
   (lsp-completion-provider :none) ;; we use Corfu

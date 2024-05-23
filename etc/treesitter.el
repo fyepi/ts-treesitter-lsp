@@ -6,9 +6,11 @@
 (use-package treesit
   :mode (("\\.tsx\\'" . tsx-mode)
          ("\\.cmake\\'" . cmake-ts-mode)
-         ("\\.go\\'" . go-ts-mode))
+         ("\\.go\\'" . go-ts-mode)
+         ("\\.js\\'" . js-ts-mode)
+         ("\\.jsx\\'" . js-ts-mode))
   :preface
-  (defun mp-setup-install-grammars ()
+  (defun os/setup-install-grammars ()
     "Install Tree-sitter grammars if they are absent."
     (interactive)
     (dolist (grammar
@@ -58,7 +60,7 @@
              (sh-base-mode . bash-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
   :config
-  (mp-setup-install-grammars)
+  (os/setup-install-grammars)
   ;; Do not forget to customize Combobulate to your liking:
   ;;
   ;;  M-x customize-group RET combobulate RET

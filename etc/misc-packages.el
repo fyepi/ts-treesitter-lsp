@@ -129,12 +129,6 @@
   :ensure diminish)
 
 
-;;; DISK
-(use-package disk
-  :ensure disk
-  :bind
-  ("<f1>" . disk))
-
 
 ;;; EDITORCONFIG
 (use-package editorconfig
@@ -250,27 +244,6 @@
   :commands
   add-node-modules-path)
 
-(use-package eslint-fix
-  :ensure eslint-fix)
-
-;; major-mode for JS/TS/JSX/TSX
-(use-package
-  tsx-mode
-  :straight '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el" :branch "main")
-  :defer
-  :mode (("\\.[jt]s[x]?\\'" . tsx-mode)
-         ("\\.[mc]js\\'" . tsx-mode))
-  :config
-  (setq tsx-mode-use-completion nil)
-  (setq tsx-mode-use-lsp nil)
-  :init
-  ;; this mode inherits from `typescript-ts-mode', but loading the latter will
-  ;; automatically update `auto-mode-alist' (clobbering any updates we might
-  ;; have made to it in the use-package :config block).
-  (require 'typescript-ts-mode))
-
-
-
 ;;; KOLON-MODE
 (use-package kolon-mode
   :ensure kolon-mode
@@ -356,17 +329,6 @@
   (nvm-dir (getenv "NVM_DIR")))
 
 
-;;; OBSIDIAN
-(use-package obsidian
-  :ensure obsidian
-  :commands
-  global-obsidian-mode
-  obsidian-specify-path
-  :custom
-  (elgrep-data-file nil)
-  :config
-  (obsidian-specify-path "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Foo/")
-  (global-obsidian-mode t))
 
 (use-package vterm
   :ensure vterm
@@ -394,34 +356,11 @@
                  (reusable-frames . visible)
                  (window-height . 0.3))))
 
-;;; RUST STUFF
-(use-package rustic
-  :ensure rustic
-  :defines
-  rustic-lsp-client
-  :custom
-  (rustic-lsp-client 'eglot))
-
-(use-package cargo-mode
-  :ensure cargo-mode
-  :after rust-mode
-  :hook
-  (rust-mode . cargo-minor-mode)
-  (rust-ts-mode . cargo-minor-mode))
 
 ;;; SASS-MODE
 (use-package sass-mode
   :ensure sass-mode
   :mode "\\.s[ac]ss\\'")
-
-
-;;; SCALA
-(use-package ensime
-  :defer ensime
-  :if (file-exists-p "/opt/ensime")
-  :load-path "/opt/ensime/elisp"
-  :hook
-  (scala-mode . ensime-scala-mode-hook))
 
 
 
@@ -460,6 +399,7 @@
 
 (use-package ansi-color
   :defines ansi-color-compilation-filter)
+
 (use-package compile
   :defines
   compilation-filter-hook)
@@ -600,6 +540,10 @@
 
 (use-package sicp
   :ensure t)
+
+(use-package logview
+  :ensure t
+  :mode ("\\.log\\'" . logview-mode))
 
 (provide 'misc-packages)
 ;;; misc-packages.el ends here
