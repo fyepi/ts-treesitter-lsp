@@ -172,6 +172,8 @@
   :hook ((lsp-mode . lsp-diagnostics-mode)
          (lsp-mode . lsp-enable-which-key-integration)
          ((tsx-ts-mode typescript-ts-mode tsx-mode js-ts-mode) . lsp-deferred))
+  ;; :os/bind ((:map (lsp-mode-map . normal)
+  ;;                 ("K" . lsp-ui-doc-show)))
   :custom
   (lsp-keymap-prefix "C-c c")
   (lsp-completion-provider :none) ;; we use Corfu
@@ -277,7 +279,11 @@
 
 (use-package lsp-ui
   :ensure t
-  :after lsp-mode)
+  :after lsp-mode
+  :config (setq lsp-ui-doc-enable t
+                lsp-ui-doc-show-with-cursor nil
+                lsp-ui-doc-include-signature t
+                lsp-ui-doc-position 'at-point))
 
 (use-package lsp-eslint
   :demand t
