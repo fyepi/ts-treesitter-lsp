@@ -4,11 +4,14 @@
 
 ;; `M-x combobulate' (default: `C-c o o') to start using Combobulate
 (use-package treesit
-  :mode (("\\.tsx\\'" . tsx-mode)
+  :mode (("\\.tsx\\'" . tsx-ts-mode)
          ("\\.cmake\\'" . cmake-ts-mode)
          ("\\.go\\'" . go-ts-mode)
-         ("\\.js\\'" . js-ts-mode)
-         ("\\.jsx\\'" . js-ts-mode))
+         ("\\.js\\'" . typescript-ts-mode)
+         ("\\.mjs\\'" . typescript-ts-mode)
+         ("\\.mts\\'" . typescript-ts-mode)
+         ("\\.cjs\\'" . typescript-ts-mode)
+         ("\\.jsx\\'" . tsx-ts-mode))
   :preface
   (defun os/setup-install-grammars ()
     "Install Tree-sitter grammars if they are absent."
@@ -48,7 +51,8 @@
            '((python-mode . python-ts-mode)
              (css-mode . css-ts-mode)
              (typescript-mode . typescript-ts-mode)
-             (js2-mode . js-ts-mode)
+             (js-mode . typescript-ts-mode)
+             (js2-mode . typescript-ts-mode)
              (c-mode . c-ts-mode)
              (c++-mode . c++-ts-mode)
              (c-or-c++-mode . c-or-c++-ts-mode)

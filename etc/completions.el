@@ -274,7 +274,8 @@
              tsx-mode
              tsx-ts-mode
              js2-mode
-             js-ts-mode))
+             js-ts-mode
+             clojure-mode))
     (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
 
 (use-package lsp-ui
