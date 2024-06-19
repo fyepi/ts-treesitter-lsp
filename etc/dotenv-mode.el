@@ -104,6 +104,9 @@
       '(
         "\\.env\\'"
         "\\.env\\.example\\'"
+        "\\.env\\.local\\'"
+        "\\.env\\.production\\'"
+        "\\.env\\.development\\'"
         ))
 
 (provide 'dotenv-mode)
