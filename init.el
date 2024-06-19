@@ -219,7 +219,8 @@ See 'use-package-normalize/:os/bind' for docs."
     "tsx-mode"
     "ai"
     "spelling"
-    "3e")
+    "3e"
+    "dotenv-mode")
   "List of modules to load on startup.")
 
 (dolist (pkg os/module-list)
