@@ -171,9 +171,13 @@
   :ensure t
   :hook ((lsp-mode . lsp-diagnostics-mode)
          (lsp-mode . lsp-enable-which-key-integration)
-         ((tsx-ts-mode typescript-ts-mode tsx-mode js-ts-mode) . lsp-deferred))
-  ;; :os/bind ((:map (lsp-mode-map . normal)
-  ;;                 ("K" . lsp-ui-doc-show)))
+         ((tsx-ts-mode
+           typescript-ts-mode
+           tsx-mode
+           js-ts-mode
+           prisma-ts-mode
+           go-ts-mode) . lsp-deferred))
+
   :custom
   (lsp-keymap-prefix "C-c c")
   (lsp-completion-provider :none) ;; we use Corfu
@@ -215,9 +219,35 @@
   (lsp-lens-enable t)
   ;; semantic
   (lsp-semantic-tokens-enable nil)
+  :functions
+  lsp-dependency
+  lsp-register-client
+  lsp-stdio-connection
+  lsp-package-path
+  :config
+  (lsp-dependency 'prisma-language-server
+                  '(:system "prisma-language-server")
+                  '(:npm :package "@prisma/language-server"
+                         :path "prisma-language-server"))
+
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection  (lambda ()
+                                                             `(,(lsp-package-path 'prisma-language-server)
+                                                               "--stdio")))
+                    :major-modes '(prisma-ts-mode)
+                    :server-id 'prismals
+                    :activation-fn (lambda (file-name _mode)
+                                     (string= (f-ext file-name)
+                                              "prisma"))
+                    :download-server-fn (lambda (_client callback error-callback _update?)
+                                          (lsp-package-ensure
+                                           'prisma-language-server
+                                           callback
+                                           error-callback))))
+
+  (add-to-list 'lsp-language-id-configuration '(prisma-ts-mode . "prisma"))
   :init
   (setq lsp-use-plists t))
-
 
 (use-package lsp-completion
   :no-require
@@ -281,6 +311,12 @@
 (use-package lsp-ui
   :ensure t
   :after lsp-mode
+  :bind (:map lsp-ui-mode-map
+              ("C-c C-r" . lsp-ui-peek-find-references)
+              ("C-c C-j" . lsp-ui-peek-find-definitions)
+              ("C-c C-u" . lsp-ui-peek-find-implementation)
+              ("C-c C-s" . lsp-ui-sideline-mode)
+              ("C-c C-d" . lsp-ui-doc-show))
   :config (setq lsp-ui-doc-enable t
                 lsp-ui-doc-show-with-cursor nil
                 lsp-ui-doc-include-signature t
@@ -289,6 +325,7 @@
 (use-package lsp-eslint
   :demand t
   :after lsp-mode)
+
 
 
 (use-package jarchive

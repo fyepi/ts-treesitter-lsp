@@ -39,7 +39,7 @@
   :functions
   doom-modeline-mode
   :ensure t
-  :init (doom-modeline-mode 1)
+  :init (doom-modeline-mode nil)
   :config
   (setq doom-modeline-time t
         doom-modeline-buffer-file-name-style 'auto))

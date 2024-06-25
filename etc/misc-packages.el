@@ -489,15 +489,6 @@
   :config
   (add-to-list 'safe-local-variable-values '(yaml-indent-offset . 4)))
 
-;;; PRISMA
-(use-package prisma-ts-mode
-  :ensure t)
-
-(add-to-list
- 'treesit-language-source-alist
- '(prisma "https://github.com/victorhqc/tree-sitter-prisma"))
-
-
 ;;; Rest client
 (use-package restclient
   :ensure restclient)
