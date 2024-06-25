@@ -35,3 +35,6 @@ straight/
 /elgrep-data.el
 secrets.el
 emacs-private.el
+/workspace/
+/logview-cache.extmap
+/.dap-breakpoints
