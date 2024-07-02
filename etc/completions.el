@@ -221,6 +221,9 @@
   (lsp-enable-suggest-server-download nil)
   (lsp-enable-symbol-highlighting t)
   (lsp-enable-text-document-color nil)
+
+  (lsp-ui-sideline-show-hover nil)
+  (lsp-ui-sideline-diagnostic-max-lines 10)
   ;; completion
   (lsp-completion-enable t)
   (lsp-completion-enable-additional-text-edit t)
@@ -235,7 +238,9 @@
   (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-workspace-status-enable nil)
-  (lsp-signature-doc-lines 1)
+  (lsp-signature-doc-lines 4)
+  (lsp-ui-doc-use-childframe t)
+  (lsp-eldoc-render-all t)
   ;; lens
   (lsp-lens-enable t)
   ;; semantic
@@ -276,7 +281,6 @@
                 'json-read)
               :around
               #'lsp-booster--advice-json-parse)
-
   (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command))
 
 (use-package lsp-completion
@@ -340,14 +344,9 @@
 
 (use-package lsp-ui
   :ensure t
-  :after lsp-mode
-  :bind (:map lsp-ui-mode-map
-              ("C-c C-r" . lsp-ui-peek-find-references)
-              ("C-c C-j" . lsp-ui-peek-find-definitions)
-              ("C-c C-u" . lsp-ui-peek-find-implementation)
-              ("C-c C-s" . lsp-ui-sideline-mode)
-              ("C-c C-d" . lsp-ui-doc-show))
+  :after (lsp-mode evil)
   :config (setq lsp-ui-doc-enable t
+                evil-lookup-func #'lsp-ui-doc-glance
                 lsp-ui-doc-show-with-cursor nil
                 lsp-ui-doc-include-signature t
                 lsp-ui-doc-position 'at-point))

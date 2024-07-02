@@ -218,22 +218,6 @@ Ignores `ARG'."
   ;; Also auto refresh dired, but be quiet about it
   (global-auto-revert-mode t))
 
-;;; HTML-MODE
-;;;; `html-mode' is actually defined in `sgml-mode.el'
-(use-package sgml-mode
-  :hook
-  (html-mode . turn-off-auto-fill)
-  :flymake-hook
-  (html-mode (flymake-collection-html-tidy)))
-
-
-;;; IBUFFER
-(use-package ibuffer
-  :bind
-  ("C-x M-b" . ibuffer)
-  :custom
-  (ibuffer-default-sorting-mode 'major-mode))
-
 
 ;;; KEYSTROKE ECHO
 (setq echo-keystrokes 0.1)
