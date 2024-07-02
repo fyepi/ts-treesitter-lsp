@@ -192,7 +192,6 @@
     terraform-mode
     typescript-ts-mode
     tsx-ts-mode
-    tsx-mode
     web-mode)
   "List of modes to set up to do indent-on-paste.
 Also remove-leading-whitespace-on-kill-line tricks")

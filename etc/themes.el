@@ -4,33 +4,26 @@
 ;;;; Theme-related customization
 
 ;;; Code:
-(use-package doom-themes
-  :defines
-  doom-themes-enable-bold
-  doom-themes-enable-italic
-  doom-themes-treemacs-theme
-  :functions
-  doom-themes-org-config
-  doom-themes-neotree-config
-  doom-themes-visual-bell-config
-  doom-themes-treemacs-config
+
+;;; For packaged versions which must use `require'.
+(use-package modus-themes
   :ensure t
   :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs nil
+        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
 
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
-  (load-theme 'doom-palenight t))
 
+  ;; Load the theme of your choice.
+  (load-theme 'modus-vivendi-tinted)
+
+  (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
+
+
+(use-package rainbow-mode
+  :ensure t
+  :hook (prog-mode . rainbow-mode))
 
 (use-package doom-modeline
   :defines
@@ -39,7 +32,7 @@
   :functions
   doom-modeline-mode
   :ensure t
-  :init (doom-modeline-mode nil)
+  :init (doom-modeline-mode t)
   :config
   (setq doom-modeline-time t
         doom-modeline-buffer-file-name-style 'auto))

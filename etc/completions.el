@@ -136,7 +136,7 @@
   (corfu-cycle t)                 ; Allows cycling through candidates
   (corfu-auto t)                  ; Enable auto completion
   (corfu-auto-prefix 2)
-  (corfu-auto-delay 0)
+  (corfu-auto-delay 0.5)
   (corfu-popupinfo-delay '(0.5 . 0.2))
   (corfu-preview-current 'insert) ; insert previewed candidate
   (corfu-preselect 'prompt)
@@ -194,7 +194,6 @@
          (lsp-mode . lsp-enable-which-key-integration)
          ((tsx-ts-mode
            typescript-ts-mode
-           tsx-mode
            js-ts-mode
            prisma-ts-mode
            go-ts-mode) . lsp-deferred))
@@ -216,7 +215,7 @@
   (lsp-enable-folding nil)
   (lsp-enable-imenu t)
   (lsp-enable-indentation nil)
-  (lsp-enable-links t)
+  (lsp-enable-links nil)
   (lsp-enable-on-type-formatting nil)
   (lsp-enable-suggest-server-download nil)
   (lsp-enable-symbol-highlighting t)
@@ -238,11 +237,11 @@
   (lsp-modeline-code-actions-enable nil)
   (lsp-modeline-diagnostics-enable nil)
   (lsp-modeline-workspace-status-enable nil)
-  (lsp-signature-doc-lines 4)
+  (lsp-signature-doc-lines 1)
   (lsp-ui-doc-use-childframe t)
   (lsp-eldoc-render-all t)
   ;; lens
-  (lsp-lens-enable t)
+  (lsp-lens-enable nil)
   ;; semantic
   (lsp-semantic-tokens-enable nil)
   :functions
@@ -335,7 +334,6 @@
              css-ts-mode
              typescript-mode
              typescript-ts-mode
-             tsx-mode
              tsx-ts-mode
              js2-mode
              js-ts-mode

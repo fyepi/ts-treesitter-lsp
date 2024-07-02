@@ -215,8 +215,6 @@ See 'use-package-normalize/:os/bind' for docs."
     "misc-highlights"
     "misc-packages"
     "themes"
-    "css-in-js-mode"
-    "tsx-mode"
     "ai"
     "spelling"
     "3e"
@@ -231,15 +229,15 @@ See 'use-package-normalize/:os/bind' for docs."
 ;;; DEFAULT FACE
 ;;;; If you don't set this early on, sometimes things get wonky.
 (set-face-attribute 'default nil
-                    :font "JetBrainsMono Nerd Font"
+                    :font "Iosevka"
                     :height 130
                     :weight 'normal)
 (set-face-attribute 'fixed-pitch nil
-                    :font "JetBrainsMono Nerd Font"
+                    :font "Iosevka"
                     :height 130
                     :weight 'normal)
 (set-face-attribute 'variable-pitch nil
-                    :font "JetBrainsMono Nerd Font"
+                    :font "Iosevka"
                     :height 130
                     :weight 'normal)
 ;; Makes commented text and keywords italics.
@@ -250,7 +248,7 @@ See 'use-package-normalize/:os/bind' for docs."
 (set-face-attribute 'font-lock-keyword-face nil
                     :slant 'italic)
 
-(set-face-attribute 'mode-line nil :height 120 :family "JetBrainsMono Nerd Font")
+(set-face-attribute 'mode-line nil :height 120 :family "Iosevka")
 
 (provide 'init)
 ;;; init.el ends here
