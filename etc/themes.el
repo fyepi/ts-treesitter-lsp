@@ -12,11 +12,11 @@
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-italic-constructs t
         modus-themes-bold-constructs nil
-        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-deuteranopia))
+        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi))
 
 
   ;; Load the theme of your choice.
-  (load-theme 'modus-vivendi-deuteranopia)
+  (load-theme 'modus-vivendi)
 
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 
