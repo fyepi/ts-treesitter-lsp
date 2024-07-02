@@ -136,7 +136,7 @@
   (corfu-cycle t)                 ; Allows cycling through candidates
   (corfu-auto t)                  ; Enable auto completion
   (corfu-auto-prefix 2)
-  (corfu-auto-delay 0.5)
+  (corfu-auto-delay 0)
   (corfu-popupinfo-delay '(0.5 . 0.2))
   (corfu-preview-current 'insert) ; insert previewed candidate
   (corfu-preselect 'prompt)
@@ -173,6 +173,7 @@
     "Try to parse bytecode instead of json."
     (or
      (when (equal (following-char) ?#)
+
        (let ((bytecode (read (current-buffer))))
          (when (byte-code-function-p bytecode)
            (funcall bytecode))))
@@ -239,7 +240,7 @@
   (lsp-modeline-workspace-status-enable nil)
   (lsp-signature-doc-lines 1)
   (lsp-ui-doc-use-childframe t)
-  (lsp-eldoc-render-all t)
+  (lsp-eldoc-render-all nil)
   ;; lens
   (lsp-lens-enable nil)
   ;; semantic

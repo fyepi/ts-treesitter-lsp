@@ -505,7 +505,12 @@
   :config (setq highlight-indent-guides-method 'character))
 
 (use-package multiple-cursors
-  :ensure t)
+  :ensure t
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 
 ;;; SMARTPARENS
 (use-package smartparens
