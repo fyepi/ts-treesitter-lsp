@@ -168,6 +168,7 @@
 
 ;; LSP
 (use-package lsp-mode
+  :diminish "LSP"
   :preface
   (defun lsp-booster--advice-json-parse (old-fn &rest args)
     "Try to parse bytecode instead of json."
@@ -200,7 +201,7 @@
            go-ts-mode) . lsp-deferred))
 
   :custom
-  (lsp-keymap-prefix "C-c c")
+  (lsp-keymap-prefix "C-c l")
   (lsp-completion-provider :none) ;; we use Corfu
   (lsp-diagnostics-provider :flycheck)
   (lsp-session-file (locate-user-emacs-file ".lsp-session"))
@@ -218,7 +219,7 @@
   (lsp-enable-indentation nil)
   (lsp-enable-links nil)
   (lsp-enable-on-type-formatting nil)
-  (lsp-enable-suggest-server-download nil)
+  (lsp-enable-suggest-server-download t)
   (lsp-enable-symbol-highlighting t)
   (lsp-enable-text-document-color nil)
 
@@ -343,6 +344,11 @@
 
 (use-package lsp-ui
   :ensure t
+  :commands
+  (lsp-ui-doc-show
+   lsp-ui-doc-glance)
+  :bind (:map lsp-mode-map
+              ("C-c C-d" . 'lsp-ui-doc-glance))
   :after (lsp-mode evil)
   :config (setq lsp-ui-doc-enable t
                 evil-lookup-func #'lsp-ui-doc-glance
@@ -475,6 +481,7 @@
   (yas-global-mode 1))
 
 (use-package copilot
+  :diminish
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :ensure t
   :config (setq copilot-indent-offset-warning-disable t)

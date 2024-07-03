@@ -12,30 +12,19 @@
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-italic-constructs t
         modus-themes-bold-constructs nil
-        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi))
+        modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
 
 
   ;; Load the theme of your choice.
-  (load-theme 'modus-vivendi)
+  (load-theme 'modus-vivendi-tinted)
 
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 
 
 (use-package rainbow-mode
   :ensure t
+  :diminish
   :hook (prog-mode . rainbow-mode))
-
-(use-package doom-modeline
-  :defines
-  doom-modeline-time
-  doom-modeline-buffer-file-name-style
-  :functions
-  doom-modeline-mode
-  :ensure t
-  :init (doom-modeline-mode t)
-  :config
-  (setq doom-modeline-time t
-        doom-modeline-buffer-file-name-style 'auto))
 
 (provide 'themes)
 ;;; themes.el ends here

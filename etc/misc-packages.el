@@ -495,9 +495,11 @@
 
 (use-package rainbow-delimiters
   :ensure t
+  :diminish
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package highlight-indent-guides
+  :diminish
   :ensure t
   :defines
   highlight-indent-guides-method

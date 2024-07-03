@@ -43,10 +43,12 @@
 
 (use-package evil-collection
   :after evil
+  :diminish
   :functions
   evil-collection-init
   :ensure t
   :config
+  (setq evil-collection-want-unimpaired-p nil)
   (evil-collection-init))
 
 
@@ -54,9 +56,6 @@
           (lambda ()
             (keymap-set org-mode-map "M-s j"
                         'consult-org-heading)))
-
-
-
 
 
 (provide 'keys)

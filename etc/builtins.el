@@ -33,6 +33,7 @@
 (setq version-control t)
 
 (setq scroll-margin 3)
+(setq next-screen-context-lines 5)
 
 
 (add-hook 'prog-mode (lambda () (subword-mode 1)))
@@ -119,13 +120,10 @@
   dired-jump
   dired-next-line
   :bind
-  ("C-c d"   . dired-jump)
-  ("C-c C-d" . dired-jump)
   (:map dired-mode-map
         ("E"                         . wdired-change-to-wdired-mode)
         ([remap beginning-of-buffer] . dired-back-to-top)
-        ([remap end-of-buffer]       . dired-jump-to-bottom))
-  )
+        ([remap end-of-buffer]       . dired-jump-to-bottom)))
 
 
 ;;; DISABLE / ENABLE

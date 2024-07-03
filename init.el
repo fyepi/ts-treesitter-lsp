@@ -230,7 +230,7 @@ See 'use-package-normalize/:os/bind' for docs."
 ;;;; If you don't set this early on, sometimes things get wonky.
 (set-face-attribute 'default nil
                     :font "Iosevka"
-                    :height 130
+                    :height 140
                     :weight 'normal)
 (set-face-attribute 'fixed-pitch nil
                     :font "Iosevka"
@@ -248,7 +248,7 @@ See 'use-package-normalize/:os/bind' for docs."
 (set-face-attribute 'font-lock-keyword-face nil
                     :slant 'italic)
 
-(set-face-attribute 'mode-line nil :height 120 :family "Iosevka")
+(set-face-attribute 'mode-line nil :height 140 :family "Iosevka")
 
 (provide 'init)
 ;;; init.el ends here
