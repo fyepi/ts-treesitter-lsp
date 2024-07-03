@@ -201,6 +201,7 @@ If provided, ARG will be passed as a macro execution repeat count."
   (newline)
   (forward-line -1)
   (indent-for-tab-command))
+(bind-key "M-<return>" #'open-line-above)
 
 
 ;;; OPEN WITH

@@ -34,7 +34,7 @@
 
 (setq scroll-margin 3)
 (setq next-screen-context-lines 5)
-
+(blink-cursor-mode 0)
 
 (add-hook 'prog-mode (lambda () (subword-mode 1)))
 
