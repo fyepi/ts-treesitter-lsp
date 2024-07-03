@@ -7,12 +7,6 @@
 ;;; Code:
 ;;;; bindings that don't have another obvious place to put them go here
 
-
-
-
-(bind-key "C-s"         #'isearch-forward)
-(bind-key "C-r"         #'isearch-backward)
-
 (bind-key "M-o"         #'other-window)
 (bind-key "M-i"         #'imenu)
 (bind-key "C-c l"        #'org-store-link)
@@ -37,20 +31,7 @@
   (setq evil-want-C-w-in-emacs-state nil)
   (setq evil-disable-insert-state-bindings t)
   :config
-  (evil-global-set-key 'normal (kbd "C-r") 'isearch-backward)
-  (evil-global-set-key 'insert (kbd "C-r") 'isearch-backward)
-  (evil-mode 1))
-
-(use-package evil-collection
-  :after evil
-  :diminish
-  :functions
-  evil-collection-init
-  :ensure t
-  :config
-  (setq evil-collection-want-unimpaired-p nil)
-  (evil-collection-init))
-
+  (evil-mode 0))
 
 (add-hook 'org-mode-hook
           (lambda ()
