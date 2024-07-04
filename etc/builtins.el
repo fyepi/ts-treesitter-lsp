@@ -244,7 +244,7 @@ Ignores `ARG'."
 
 
 ;;; MOUSE WHEEL
-(if (fboundp 'mouse-wheel-mode) (mouse-wheel-mode -1))
+(if (fboundp 'mouse-wheel-mode) (mouse-wheel-mode t))
 
 
 ;;; NXML-MODE
@@ -258,118 +258,105 @@ Ignores `ARG'."
 
 
 ;;; ORG MODE
-(defun os/org-path (path)
-  (expand-file-name path org-directory))
-
-
-(add-hook 'org-mode-hook 'org-indent-mode)
-(setq org-goto-interface "outline-path-completion")
-
-(custom-set-faces
- '(org-level-1 ((t (:inherit outline-1 :height 1.1)))))
-
-(setq org-directory "~/org/"
-      org-agenda-files '("~/org/todo.org")
-      org-default-notes-file (expand-file-name "notes.org" org-directory)
-      org-ellipsis " ▼ "
-      org-log-done 'time
-      org-journal-dir "~/org/journal/"
-      org-journal-date-format "%B %d, %Y (%A) "
-      org-journal-file-format "%Y-%m-%d.org"
-      org-hide-emphasis-markers nil)
-(setq org-src-preserve-indentation nil
-      org-src-tab-acts-natively t
-      org-edit-src-content-indentation 0
-      org-src-fontify-natively t
-      org-confirm-babel-evaluate nil)
-
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "READ(r)" "|"  "DONE(d!)")
-        (sequence "|" "WAIT(w)" "BACK(b)")))
-
-(setq org-todo-keyword-faces
-      '(("NEXT" . (:foreground "orange red" :weight bold))
-        ("WAIT" . (:foreground "HotPink2" :weight bold))
-        ("BACK" . (:foreground "MediumPurple3" :weight bold))))
-
-;; Configure common tags
-(setq org-tag-alist
-      '((:startgroup)
+(use-package org
+  :ensure t
+  :preface
+  (defun os/org-path (path)
+    (expand-file-name path org-directory))
+  :hook ((org-mode . org-indent))
+  :defines
+  org-journal-dir
+  org-journal-date-format
+  org-journal-file-format
+  org-agenda-window-setup
+  org-agenda-custom-commands
+  org-capture-templates
+  :config
+  (custom-set-faces
+   '(org-level-1 ((t (:inherit outline-1 :height 1.1)))))
+  (setq org-directory "~/org/"
+        org-agenda-files '("~/org/todo.org")
+        org-default-notes-file (expand-file-name "notes.org" org-directory)
+        org-ellipsis " ▼ "
+        org-log-done 'time
+        org-journal-dir "~/org/journal/"
+        org-journal-date-format "%B %d, %Y (%A) "
+        org-journal-file-format "%Y-%m-%d.org"
+        org-hide-emphasis-markers nil)
+  (setq org-src-preserve-indentation nil
+        org-src-tab-acts-natively t
+        org-edit-src-content-indentation 0
+        org-src-fontify-natively t
+        org-confirm-babel-evaluate nil)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "READ(r)" "|"  "DONE(d!)")
+          (sequence "|" "WAIT(w)" "BACK(b)")))
+  (setq org-tag-alist
+        '((:startgroup)
                                         ; Put mutually exclusive tags here
-        (:endgroup)
-        ("@home" . ?H)
-        ("@work" . ?W)
-        ("batch" . ?b)
-        ("followup" . ?f)))
+          (:endgroup)
+          ("@home" . ?H)
+          ("@work" . ?W)
+          ("batch" . ?b)
+          ("followup" . ?f)))
+  (setq org-agenda-window-setup 'current-window)
+  ;; Make done tasks show up in the agenda log
+  (setq org-log-done 'time)
+  (setq org-columns-default-format "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
+  (setq org-agenda-custom-commands
+        `(("d" "Dashboard"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (tags-todo "+PRIORITY=\"A\""
+                       ((org-agenda-overriding-header "High Priority")))
+            (tags-todo "+followup" ((org-agenda-overriding-header "Needs Follow Up")))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Actions")
+                   (org-agenda-max-todos nil)))
+            (todo "WAIT"
+                  ((org-agenda-overriding-header "Waiting for")
+                   (org-agenda-text-search-extra-files nil)))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
+                   (org-agenda-text-search-extra-files nil)))))
+
+          ("n" "Next Tasks"
+           ((agenda "" ((org-deadline-warning-days 7)))
+            (todo "NEXT"
+                  ((org-agenda-overriding-header "Next Tasks")))))
+
+          ;; Low-effort next actions
+          ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+           ((org-agenda-overriding-header "Low Effort Tasks")
+            (org-agenda-max-todos 20)
+            (org-agenda-files org-agenda-files)))))
+  (setq org-capture-templates
+        `(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox")
+           "* TODO %?\n  %U\n  %a\n  %i" :prepend t :empty-lines 1)
+
+          ("j" "Journal Entries")
+          ("je" "General Entry" entry
+           (file+olp+datetree ,(os/org-path "Journal.org"))
+           "\n* %<%I:%M %p> - %^{Title} \n\n%?\n\n"
+           :tree-type week
+           :clock-in :clock-resume
+           :prepend t
+           :empty-lines 1)
+          ("jt" "Task Entry" entry
+           (file+olp+datetree ,(os/org-path "Journal.org"))
+           "\n* %<%I:%M %p> - Task Notes: %a\n\n%?\n\n"
+           :tree-type week
+           :clock-in :clock-resume
+           :empty-lines 1)
+          ("jj" "Journal" entry
+           (file+olp+datetree ,(os/org-path "Journal.org"))
+           "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+           :tree-type week
+           :clock-in :clock-resume
+           :empty-lines 1))))
+
 
 ;; Use directional window movement (S-<left> to move to the left window)
 (windmove-default-keybindings)
-
-(setq org-agenda-window-setup 'current-window)
-
-;; Make done tasks show up in the agenda log
-(setq org-log-done 'time)
-(setq org-columns-default-format "%20CATEGORY(Category) %65ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
-(setq org-agenda-custom-commands
-      `(("d" "Dashboard"
-         ((agenda "" ((org-deadline-warning-days 7)))
-          (tags-todo "+PRIORITY=\"A\""
-                     ((org-agenda-overriding-header "High Priority")))
-          (tags-todo "+followup" ((org-agenda-overriding-header "Needs Follow Up")))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Actions")
-                 (org-agenda-max-todos nil)))
-          (todo "WAIT"
-                ((org-agenda-overriding-header "Waiting for")
-                 (org-agenda-text-search-extra-files nil)))
-          (todo "TODO"
-                ((org-agenda-overriding-header "Unprocessed Inbox Tasks")
-                 (org-agenda-text-search-extra-files nil)))))
-
-        ("n" "Next Tasks"
-         ((agenda "" ((org-deadline-warning-days 7)))
-          (todo "NEXT"
-                ((org-agenda-overriding-header "Next Tasks")))))
-
-        ;; Low-effort next actions
-        ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-         ((org-agenda-overriding-header "Low Effort Tasks")
-          (org-agenda-max-todos 20)
-          (org-agenda-files org-agenda-files)))))
-(setq org-capture-templates
-      `(("t" "Todo" entry (file+headline "~/org/todo.org" "Inbox")
-         "* TODO %?\n  %U\n  %a\n  %i" :prepend t :empty-lines 1)
-
-        ("j" "Journal Entries")
-        ("je" "General Entry" entry
-         (file+olp+datetree ,(os/org-path "Journal.org"))
-         "\n* %<%I:%M %p> - %^{Title} \n\n%?\n\n"
-         :tree-type week
-         :clock-in :clock-resume
-         :prepend t
-         :empty-lines 1)
-        ("jt" "Task Entry" entry
-         (file+olp+datetree ,(os/org-path "Journal.org"))
-         "\n* %<%I:%M %p> - Task Notes: %a\n\n%?\n\n"
-         :tree-type week
-         :clock-in :clock-resume
-         :empty-lines 1)
-        ("jj" "Journal" entry
-         (file+olp+datetree ,(os/org-path "Journal.org"))
-         "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-         :tree-type week
-         :clock-in :clock-resume
-         :empty-lines 1)))
-
-
-;;; PAREN MATCH
-(use-package paren
-  :defines show-paren-style
-  :custom
-  (show-paren-style 'parenthesis)
-  :config
-  (setq show-paren-context-when-offscreen 'overlay)
-  (show-paren-mode t))
 
 
 ;;; PS PRINT
@@ -404,8 +391,6 @@ Ignores `ARG'."
 
 ;;; SIZE INDICATION MODE
 (size-indication-mode t)
-
-
 
 
 ;;; TEXT-MODE

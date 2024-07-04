@@ -149,7 +149,7 @@
               ("S-TAB"      . corfu-previous)
               ([backtab]    . corfu-previous)
               ("S-<return>" . corfu-insert)
-              ("RET"        . nil))
+              ("RET"        . corfu-insert))
 
   :init
   (global-corfu-mode)
@@ -224,7 +224,7 @@
   (lsp-enable-text-document-color nil)
 
   (lsp-ui-sideline-show-hover nil)
-  (lsp-ui-sideline-diagnostic-max-lines 10)
+  (lsp-ui-sideline-diagnostic-max-lines 20)
   ;; completion
   (lsp-completion-enable t)
   (lsp-completion-enable-additional-text-edit t)
