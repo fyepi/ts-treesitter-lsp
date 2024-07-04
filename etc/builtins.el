@@ -263,7 +263,13 @@ Ignores `ARG'."
   :preface
   (defun os/org-path (path)
     (expand-file-name path org-directory))
-  :hook ((org-mode . org-indent))
+  :hook (org-mode . org-indent-mode)
+  :commands
+  org-insert-heading
+  org-insert-item
+  :bind (:map org-mode-map
+              ("C-<return>" . 'org-insert-heading)
+              ("M-<return>" . 'org-insert-item))
   :defines
   org-journal-dir
   org-journal-date-format
