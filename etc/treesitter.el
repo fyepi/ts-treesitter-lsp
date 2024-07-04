@@ -11,6 +11,7 @@
          ("\\.mjs\\'" . typescript-ts-mode)
          ("\\.mts\\'" . typescript-ts-mode)
          ("\\.cjs\\'" . typescript-ts-mode)
+         ("\\.ts\\'" . typescript-ts-mode)
          ("\\.jsx\\'" . tsx-ts-mode)
          ("\\.yaml\\'" . yaml-ts-mode)
          ("\\.yml\\'" . yaml-ts-mode)

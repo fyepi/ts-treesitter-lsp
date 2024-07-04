@@ -220,9 +220,6 @@
   :hook
   (json-mode . add-node-moules-path)
   (json-ts-mode . add-node-moules-path)
-  :flymake-hook
-  (json-mode (flymake-collection-jsonlint))
-  (json-ts-mode (flymake-collection-jsonlint))
   :mode
   "\\.json\\'"
   :config

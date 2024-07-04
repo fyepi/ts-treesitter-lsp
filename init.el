@@ -205,16 +205,14 @@ See 'use-package-normalize/:os/bind' for docs."
   '(
     "builtins"
     "straight"
-    "init"
+    "themes"
     "treesitter"
     "completions"
     "clojure"
     "keys"
     "linters"
     "misc-functions"
-    "misc-highlights"
     "misc-packages"
-    "themes"
     "ai"
     "spelling"
     "3e"
@@ -224,31 +222,6 @@ See 'use-package-normalize/:os/bind' for docs."
 (dolist (pkg os/module-list)
   (if (file-readable-p (concat os/emacs-config-dir pkg ".el"))
       (load-library pkg)))
-
-
-;;; DEFAULT FACE
-;;;; If you don't set this early on, sometimes things get wonky.
-(set-face-attribute 'default nil
-                    :font "Iosevka"
-                    :height 140
-                    :weight 'normal)
-(set-face-attribute 'fixed-pitch nil
-                    :font "Iosevka"
-                    :height 130
-                    :weight 'normal)
-(set-face-attribute 'variable-pitch nil
-                    :font "Iosevka"
-                    :height 130
-                    :weight 'normal)
-;; Makes commented text and keywords italics.
-;; This is working in emacsclient but not emacs.
-;; Your font must have an italic face available.
-(set-face-attribute 'font-lock-comment-face nil
-                    :slant 'italic)
-(set-face-attribute 'font-lock-keyword-face nil
-                    :slant 'italic)
-
-(set-face-attribute 'mode-line nil :height 140 :family "Iosevka")
 
 (provide 'init)
 ;;; init.el ends here
