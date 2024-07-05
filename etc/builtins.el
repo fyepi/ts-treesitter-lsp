@@ -119,8 +119,10 @@
   dired
   dired-jump
   dired-next-line
+  dired-up-directory
   :bind
   (:map dired-mode-map
+        ("-"                         . dired-up-directory)
         ("E"                         . wdired-change-to-wdired-mode)
         ([remap beginning-of-buffer] . dired-back-to-top)
         ([remap end-of-buffer]       . dired-jump-to-bottom)))

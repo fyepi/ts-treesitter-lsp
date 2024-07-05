@@ -103,16 +103,14 @@
 
   (setq fontaine-presets
         '((small
-           n           :default-family "Iosevka Comfy Motion"
-           :default-height 120
-           :variable-pitch-family "Iosevka Comfy Duo")
+           :default-height 110)
           (regular) ; like this it uses all the fallback values and is named `regular'
           (medium
            :default-height 130
            :bold-weight extrabold)
           (large
            :inherit medium
-           :default-height 150)
+           :default-height 140)
           (live-stream
            :default-family "Iosevka Comfy Wide"
            :default-height 150
@@ -141,7 +139,7 @@
            :fixed-pitch-serif-slant nil
            :fixed-pitch-serif-height 1.0
 
-           :variable-pitch-family "Iosevka Comfy Motion Duo"
+           :variable-pitch-family "Iosevka Comfy"
            :variable-pitch-weight nil
            :variable-pitch-slant nil
            :variable-pitch-height 1.0
@@ -174,8 +172,8 @@
            :tab-line-family nil
            :tab-line-weight nil
            :tab-line-slant nil
-           :tab-line-height 1.0
 
+           :tab-line-height 1.0
            :bold-family nil
            :bold-weight bold
            :bold-slant nil

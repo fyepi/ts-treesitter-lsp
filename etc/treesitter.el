@@ -13,6 +13,7 @@
          ("\\.cjs\\'" . typescript-ts-mode)
          ("\\.ts\\'" . typescript-ts-mode)
          ("\\.jsx\\'" . tsx-ts-mode)
+         ("\\.json\\'" . json-ts-mode)
          ("\\.yaml\\'" . yaml-ts-mode)
          ("\\.yml\\'" . yaml-ts-mode)
          ("\\.Dockerfile\\'" . dockerfile-ts-mode)
