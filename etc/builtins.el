@@ -286,6 +286,7 @@ Ignores `ARG'."
         org-agenda-files '("~/org/todo.org")
         org-default-notes-file (expand-file-name "notes.org" org-directory)
         org-ellipsis " ▼ "
+        org-export-backends '(markdown ascii html icalendar latex odt)
         org-log-done 'time
         org-journal-dir "~/org/journal/"
         org-journal-date-format "%B %d, %Y (%A) "

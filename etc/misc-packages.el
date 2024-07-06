@@ -40,9 +40,13 @@
   (projectile-cleanup-known-projects))
 
 (use-package whole-line-or-region
-  :ensure whole-line-or-region)
+  :ensure t
+  :init
+  (whole-line-or-region-global-mode 1))
 
-(require 'whole-line-or-region)
+(use-package keycast
+  :ensure t)
+
 
 ;;; AG
 (use-package ag
@@ -54,6 +58,7 @@
   :custom
   (ag-highlight-search t)
   (ag-reuse-buffers t))
+
 
 
 ;;; ALLLLLLL THE ICONS
@@ -88,7 +93,7 @@
 ;; https://github.com/radian-software/apheleia
 (use-package apheleia
   :ensure apheleia
-  :diminish ""
+  :diminish ""                          ; Don't show in modeline
   :defines
   apheleia-formatters
   apheleia-mode-alist
@@ -101,8 +106,6 @@
   (setf (alist-get 'prettier-json apheleia-formatters)
         '("prettier" "--stdin-filepath" filepath))
   (setf (alist-get 'python-mode apheleia-mode-alist) 'ruff)
-  (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
-  (setf (alist-get 'prisma-ts-mode apheleia-mode-alist) 'prettier)
   (apheleia-global-mode +1))
 
 
@@ -539,6 +542,15 @@
 (use-package logview
   :ensure t
   :mode ("\\.log\\'" . logview-mode))
+
+(use-package gif-screencast
+  :straight '(emacs-gif-screencast :type git :host gitlab :repo "Ambrevar/emacs-gif-screencast")
+  :config
+  (setq gif-screencast-args '("-x")    ; To shut up th eshutter sound of `screencapture' (see `gif-screencast-command')
+        gif-screencast-cropping-program "mogrify" ;; Optional: Used to crop the capture to the Emacs frame.
+        gif-screencast-capture-format "ppm" ;; Optional: Required to crop captured images.
+        gif-screencast-output-directory "~/Desktop"
+        ))
 
 (provide 'misc-packages)
 ;;; misc-packages.el ends here

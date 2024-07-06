@@ -126,6 +126,11 @@
   ;; (setq consult-project-function nil)
   )
 
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1))
+
 
 
 ;;;; Code Completion
@@ -163,6 +168,55 @@
               (corfu-mode))
             nil
             t))
+
+
+;; Add extensions
+(use-package cape
+  ;; Bind dedicated completion commands
+  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+  :bind (("M-+ p" . completion-at-point) ;; capf
+         ("M-+ t" . complete-tag)        ;; etags
+         ("M-+ d" . cape-dabbrev)        ;; or dabbrev-completion
+         ("M-+ h" . cape-history)
+         ("M-+ f" . cape-file)
+         ("M-+ k" . cape-keyword)
+         ("M-+ s" . cape-elisp-symbol)
+         ("M-+ e" . cape-elisp-block)
+         ("M-+ a" . cape-abbrev)
+         ("M-+ l" . cape-line)
+         ("M-+ w" . cape-dict)
+         ("M-+ :" . cape-emoji)
+         ("M-+ \\" . cape-tex)
+         ("M-+ _" . cape-tex)
+         ("M-+ ^" . cape-tex)
+         ("M-+ &" . cape-sgml)
+         ("M-+ r" . cape-rfc1345))
+  :init
+  ;; Add to the global default value of `completion-at-point-functions' which is
+  ;; used by `completion-at-point'.  The order of the functions matters, the
+  ;; first function returning a result wins.  Note that the list of buffer-local
+  ;; completion functions takes precedence over the global list.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  ;;(add-hook 'completion-at-point-functions #'cape-history)
+  ;;(add-hook 'completion-at-point-functions #'cape-keyword)
+  ;;(add-hook 'completion-at-point-functions #'cape-tex)
+  ;;(add-hook 'completion-at-point-functions #'cape-sgml)
+  ;;(add-hook 'completion-at-point-functions #'cape-rfc1345)
+  ;;(add-hook 'completion-at-point-functions #'cape-abbrev)
+  ;;(add-hook 'completion-at-point-functions #'cape-dict)
+  ;;(add-hook 'completion-at-point-functions #'cape-elisp-symbol)
+  ;;(add-hook 'completion-at-point-functions #'cape-line)
+  )
+
+
+(use-package yasnippet-capf
+  :after cape
+  :functions
+  yasnippet-capf
+  :config
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 
 
@@ -331,6 +385,12 @@
   :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
   :init (setq lsp-tailwindcss-add-on-mode t)
   :config
+  (setq lsp-tailwindcss-experimental-class-regex
+        [":class\\s+\"([^\"]*)\""
+         ":[\\w-.#>]+\\.([\\w-]*)"
+         "tw|yourModule\\(([^)]*)\\)"
+         "[\"'`]([^\"'`]*).*?[\"'`]"
+         ])
   (dolist (tw-major-mode
            '(css-mode
              css-ts-mode

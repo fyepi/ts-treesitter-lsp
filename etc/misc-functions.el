@@ -232,48 +232,6 @@ If provided, ARG will be passed as a macro execution repeat count."
 (bind-key "C-%" #'genehack/paren-bounce)
 (bind-key "C-5" #'genehack/paren-bounce)
 
-(defun os/set-frame-font-size (&optional font-size)
-  "Change frame font size to FONT-SIZE.
-If no FONT-SIZE provided, reset the size to its default variable."
-  (let ((font-size
-         (or font-car
-             (size (get 'os/font-size 'standard-value)))))
-    (customize-set-variable 'os/font-size font-size)
-    (set-frame-font
-     (format "%s %d" os/font-name font-size) nil t)))
-
-(defun os/global-text-scale-increase ()
-  "Increase frame font by one."
-  (interactive)
-  (os/set-frame-font-size (+ os/font-size 5)))
-(bind-key "M-+" #'os/global-text-scale-increase)
-(bind-key "M-=" #'text-scale-increase)
-
-(defun os/global-text-scale-decrease ()
-  "Decrease frame font by one."
-  (interactive)
-  (os/set-frame-font-size (- os/font-size 1)))
-(bind-key "M-_" #'os/global-text-scale-decrease)
-
-(defun os/global-text-scale-reset ()
-  "Reset frame font."
-  (interactive)
-  (os/set-frame-font-size))
-(bind-key "M-0" #'os/text-scale-default)
-(bind-key "M-)" #'os/global-text-scale-reset)
-
-
-;;; TOGGLE-BOL
-(defun os/bol-toggle ()
-  "Toggle between beginning of indent and beginning of line."
-  (interactive)
-  (let ((os/bol-command-name "os/bol-toggle"))
-    (setq this-command os/bol-command-name)
-    (cond ((equal (point) (line-beginning-position)) (back-to-indentation))
-          ((equal last-command os/bol-command-name) (move-beginning-of-line nil))
-          (t (back-to-indentation)))))
-(bind-key "C-a" #'os/bol-toggle)
-
 
 ;;; URL ENCODING
 ;;;; based on http://twitter.com/#!/OvidPerl/status/28076709865586688

@@ -17,7 +17,9 @@
          ("\\.yaml\\'" . yaml-ts-mode)
          ("\\.yml\\'" . yaml-ts-mode)
          ("\\.Dockerfile\\'" . dockerfile-ts-mode)
-         ("\\.prisma\\'" . prisma-ts-mode))
+         ("\\.prisma\\'" . prisma-ts-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.mdx\\'" . markdown-mode))
   :preface
   (defun os/setup-install-grammars ()
     "Install Tree-sitter grammars if they are absent."

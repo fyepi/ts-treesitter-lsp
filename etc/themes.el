@@ -111,6 +111,9 @@
           (large
            :inherit medium
            :default-height 140)
+          (extra-large
+           :inherit large
+           :default-height 150)
           (live-stream
            :default-family "Iosevka Comfy Wide"
            :default-height 150
