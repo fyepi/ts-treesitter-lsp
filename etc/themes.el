@@ -251,10 +251,21 @@
           (agenda-date . (variable-pitch regular 1.3))
           (t . (regular 1.15))))
 
-  (setq modus-themes-common-palette-overrides nil)
+  (setq modus-themes-common-palette-overrides nil))
 
-  (modus-themes-load-theme (car modus-themes-to-toggle)))
+(use-package ef-themes
+  :ensure t)
 
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-one t)
+
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 (provide 'themes)
 ;;; themes.el ends here
