@@ -54,7 +54,6 @@
 (use-package spacious-padding
   :ensure t
   :if (display-graphic-p)
-  :hook (after-init . spacious-padding-mode)
   :bind ("<f8>" . spacious-padding-mode)
   :init
   ;; These are the defaults, but I keep it here for visiibility.

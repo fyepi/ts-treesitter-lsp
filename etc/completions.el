@@ -170,56 +170,6 @@
             t))
 
 
-;; Add extensions
-(use-package cape
-  ;; Bind dedicated completion commands
-  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-  :bind (("M-+ p" . completion-at-point) ;; capf
-         ("M-+ t" . complete-tag)        ;; etags
-         ("M-+ d" . cape-dabbrev)        ;; or dabbrev-completion
-         ("M-+ h" . cape-history)
-         ("M-+ f" . cape-file)
-         ("M-+ k" . cape-keyword)
-         ("M-+ s" . cape-elisp-symbol)
-         ("M-+ e" . cape-elisp-block)
-         ("M-+ a" . cape-abbrev)
-         ("M-+ l" . cape-line)
-         ("M-+ w" . cape-dict)
-         ("M-+ :" . cape-emoji)
-         ("M-+ \\" . cape-tex)
-         ("M-+ _" . cape-tex)
-         ("M-+ ^" . cape-tex)
-         ("M-+ &" . cape-sgml)
-         ("M-+ r" . cape-rfc1345))
-  :init
-  ;; Add to the global default value of `completion-at-point-functions' which is
-  ;; used by `completion-at-point'.  The order of the functions matters, the
-  ;; first function returning a result wins.  Note that the list of buffer-local
-  ;; completion functions takes precedence over the global list.
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-elisp-block)
-  ;;(add-hook 'completion-at-point-functions #'cape-history)
-  ;;(add-hook 'completion-at-point-functions #'cape-keyword)
-  ;;(add-hook 'completion-at-point-functions #'cape-tex)
-  ;;(add-hook 'completion-at-point-functions #'cape-sgml)
-  ;;(add-hook 'completion-at-point-functions #'cape-rfc1345)
-  ;;(add-hook 'completion-at-point-functions #'cape-abbrev)
-  ;;(add-hook 'completion-at-point-functions #'cape-dict)
-  ;;(add-hook 'completion-at-point-functions #'cape-elisp-symbol)
-  ;;(add-hook 'completion-at-point-functions #'cape-line)
-  )
-
-
-(use-package yasnippet-capf
-  :after cape
-  :functions
-  yasnippet-capf
-  :config
-  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
-
-
-
 ;; LSP
 (use-package lsp-mode
   :diminish "LSP"
@@ -250,6 +200,7 @@
          (lsp-mode . lsp-enable-which-key-integration)
          ((tsx-ts-mode
            typescript-ts-mode
+           json-ts-mode
            js-ts-mode
            prisma-ts-mode
            go-ts-mode) . lsp-deferred))
@@ -305,28 +256,6 @@
   lsp-register-client
   lsp-stdio-connection
   lsp-package-path
-  :config
-  (lsp-dependency 'prisma-language-server
-                  '(:system "prisma-language-server")
-                  '(:npm :package "@prisma/language-server"
-                         :path "prisma-language-server"))
-
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-stdio-connection  (lambda ()
-                                                             `(,(lsp-package-path 'prisma-language-server)
-                                                               "--stdio")))
-                    :major-modes '(prisma-ts-mode)
-                    :server-id 'prismals
-                    :activation-fn (lambda (file-name _mode)
-                                     (string= (f-ext file-name)
-                                              "prisma"))
-                    :download-server-fn (lambda (_client callback error-callback _update?)
-                                          (lsp-package-ensure
-                                           'prisma-language-server
-                                           callback
-                                           error-callback))))
-
-  (add-to-list 'lsp-language-id-configuration '(prisma-ts-mode . "prisma"))
   :init
   (setq lsp-use-plists t)
   ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
@@ -340,21 +269,13 @@
 
 (use-package lsp-completion
   :no-require
-  :hook ((lsp-mode . lsp-completion-mode-maybe))
-  :commands (lsp-completion-mode)
-  :preface
-  (defun lsp-completion-mode-maybe ()
-    (unless (bound-and-true-p cider-mode)
-      (lsp-completion-mode 1))))
+  :hook ((lsp-mode . lsp-completion-mode))
+  :commands (lsp-completion-mode))
 
 
 (use-package lsp-clojure
   :demand t
-  :after lsp-mode
-  :hook (cider-mode . cider-toggle-lsp-completion-maybe)
-  :preface
-  (defun cider-toggle-lsp-completion-maybe ()
-    (lsp-completion-mode (if (bound-and-true-p cider-mode) -1 1))))
+  :after lsp-mode)
 
 (use-package lsp-clojure
   :no-require
@@ -544,7 +465,8 @@
   :diminish
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :ensure t
-  :config (setq copilot-indent-offset-warning-disable t)
+  :config (setq copilot-indent-offset-warning-disable t
+                copilot-max-char 10000000)
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
               ("C-<tab>" . 'copilot-accept-completion)

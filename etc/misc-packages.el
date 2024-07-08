@@ -552,5 +552,10 @@
         gif-screencast-output-directory "~/Desktop"
         ))
 
+
+(use-package npm-mode
+  :straight '(npm-mode :type git :host github :repo "mojochao/npm-mode")
+  :hook ((js-ts-mode typescript-ts-mode tsx-ts-mode json-ts-mode) . npm-mode))
+
 (provide 'misc-packages)
 ;;; misc-packages.el ends here
