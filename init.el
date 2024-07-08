@@ -204,6 +204,7 @@ See 'use-package-normalize/:os/bind' for docs."
 (defvar os/module-list
   '(
     "builtins"
+    "dired-config"
     "straight"
     "themes"
     "treesitter"

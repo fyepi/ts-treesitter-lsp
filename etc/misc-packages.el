@@ -475,7 +475,7 @@
 
 ;;; YAML-MODE
 (use-package yaml-mode
-  :ensure yaml-mode
+  :ensure t
   :commands
   yaml-mode
   :defines
@@ -499,8 +499,8 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package highlight-indent-guides
-  :diminish
-  :ensure t
+  :diminish t
+  :straight '(highlight-indent-guides :type git :host github :repo "DarthFennec/highlight-indent-guides")
   :defines
   highlight-indent-guides-method
   :hook (prog-mode . highlight-indent-guides-mode)
