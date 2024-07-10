@@ -339,7 +339,11 @@
 
 (use-package lsp-eslint
   :demand t
-  :after lsp-mode)
+  :after lsp-mode
+  :config
+  (setq lsp-eslint-server-command `("node"
+                                    "/Users/ovistoica/.vscode/extensions/dbaeumer.vscode-eslint-3.0.10/server/out/eslintServer.js"
+                                    "--stdio")))
 
 
 
@@ -461,13 +465,27 @@
   :config
   (yas-global-mode 1))
 
+(use-package jsonrpc
+  :ensure t)
+
 (use-package copilot
-  :diminish
+  :defines
+  copilot-max-char
+  :commands
+  copilot-mode
+  :preface
+  (defun os/activate-copilot ()
+    (if (or (> (buffer-size) 100000)
+            (string-prefix-p "*temp*-" (buffer-name)))
+        ;; Or don't even warn to get rid of it.
+        (message "Buffer size exceeds copilot max char limit or buffer is temporary. Copilot will not be activated.")
+      (copilot-mode)))
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :ensure t
-  :config (setq copilot-indent-offset-warning-disable t
-                copilot-max-char 10000000)
-  :hook (prog-mode . copilot-mode)
+  :config
+  (setq copilot-enable-predicates nil)
+  (add-to-list 'copilot-major-mode-alist '("tsx-ts" . "typescriptreact"))
+  (add-to-list 'copilot-major-mode-alist '("typescript-ts" . "typescript"))
+  :hook (prog-mode . os/activate-copilot)
   :bind (:map copilot-completion-map
               ("C-<tab>" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion)
