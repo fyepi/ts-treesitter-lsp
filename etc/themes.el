@@ -61,7 +61,7 @@
         '( :internal-border-width 15
            :header-line-width 4
            :mode-line-width 6
-           :tab-width 4
+           :tab-width 2
            :right-divider-width 1
            :scroll-bar-width 8
            :left-fringe-width 20
@@ -223,14 +223,9 @@
 (use-package modus-themes
   :ensure t
   :after fontaine
-  :preface
-  (defun os/modus-themes-toggle ()
-    (interactive)
-    (modus-themes-toggle)
-    (fontaine-set-preset 'regular))
   :commands
   modus-themes-load-theme
-  :bind (("<f5>" . os/modus-themes-toggle)
+  :bind (("<f5>" . modus-themes-toggle)
          ("C-<f5>" . modus-themes-select))
   :config
   (setq modus-themes-custom-auto-reload nil

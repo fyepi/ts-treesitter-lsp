@@ -336,27 +336,6 @@
   (setq shell-file-name "/bin/zsh"
         vterm-max-scrollback 5000))
 
-(use-package vterm-toggle
-  :after vterm
-  :ensure vterm-toggle
-  :config
-  (setq vterm-toggle-fullscreen-p nil)
-  (setq vterm-toggle-scope 'project)
-  (add-to-list 'display-buffer-alist
-               '((lambda (buffer-or-name _)
-                   (let ((buffer (get-buffer buffer-or-name)))
-                     (with-current-buffer buffer
-                       (or (equal major-mode 'vterm-mode)
-                           (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
-                 (display-buffer-reuse-window display-buffer-at-bottom)
-                 ;;(display-buffer-reuse-window display-buffer-in-direction)
-                 ;;display-buffer-in-direction/direction/dedicated is added in emacs27
-                 ;;(direction . bottom)
-                 ;;(dedicated . t) ;dedicated is supported in emacs27
-                 (reusable-frames . visible)
-                 (window-height . 0.3))))
-
-
 ;;; SASS-MODE
 (use-package sass-mode
   :ensure sass-mode
@@ -556,6 +535,18 @@
 (use-package npm-mode
   :straight '(npm-mode :type git :host github :repo "mojochao/npm-mode")
   :init (npm-global-mode))
+
+(use-package sqlite-mode-extras
+  :straight '(sqlite-mode-extras :type git :host github :repo "xenodium/sqlite-mode-extras")
+  :defines sqlite-mode-map
+  :hook ((sqlite-mode . sqlite-extras-minor-mode))
+  :bind (:map
+         sqlite-mode-map
+         ("n" . next-line)
+         ("p" . previous-line)
+         ("<backtab>" . sqlite-mode-extras-backtab-dwim)
+         ("<tab>" . sqlite-mode-extras-tab-dwim)
+         ("RET" . sqlite-mode-extras-ret-dwim)))
 
 (provide 'misc-packages)
 ;;; misc-packages.el ends here

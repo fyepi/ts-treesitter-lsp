@@ -302,26 +302,26 @@
   (lsp-metals-server-args
    '("-J-Dmetals.allow-multiline-string-formatting=off")))
 
-(use-package lsp-tailwindcss
-  :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
-  :init (setq lsp-tailwindcss-add-on-mode t)
-  :config
-  (setq lsp-tailwindcss-experimental-class-regex
-        [":class\\s+\"([^\"]*)\""
-         ":[\\w-.#>]+\\.([\\w-]*)"
-         "tw|yourModule\\(([^)]*)\\)"
-         "[\"'`]([^\"'`]*).*?[\"'`]"
-         ])
-  (dolist (tw-major-mode
-           '(css-mode
-             css-ts-mode
-             typescript-mode
-             typescript-ts-mode
-             tsx-ts-mode
-             js2-mode
-             js-ts-mode
-             clojure-mode))
-    (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
+;; (use-package lsp-tailwindcss
+;;   :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
+;;   :init (setq lsp-tailwindcss-add-on-mode t)
+;;   :config
+;;   (setq lsp-tailwindcss-experimental-class-regex
+;;         [":class\\s+\"([^\"]*)\""
+;;          ":[\\w-.#>]+\\.([\\w-]*)"
+;;          "tw|yourModule\\(([^)]*)\\)"
+;;          "[\"'`]([^\"'`]*).*?[\"'`]"
+;;          ])
+;;   (dolist (tw-major-mode
+;;            '(css-mode
+;;              css-ts-mode
+;;              ;; typescript-mode
+;;              ;; typescript-ts-mode
+;;              ;; tsx-ts-mode
+;;              ;; js2-mode
+;;              ;; js-ts-mode
+;;              clojure-mode))
+;;     (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
 
 (use-package lsp-ui
   :ensure t
@@ -491,6 +491,10 @@
               ("C-TAB" . 'copilot-accept-completion)
               ("S-C-TAB" . 'copilot-accept-completion-by-word)
               ("S-C-<tab>" . 'copilot-accept-completion-by-word)))
+
+(use-package prisma-mode
+  :straight (:host github :repo "pimeys/emacs-prisma-mode" :branch "main")
+  :mode "\\.prisma\\'")
 
 (provide 'completions)
 ;;; completions.el ends here

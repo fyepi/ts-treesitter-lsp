@@ -35,8 +35,14 @@
 (setq scroll-margin 3)
 (setq next-screen-context-lines 5)
 (blink-cursor-mode 0)
+(pixel-scroll-precision-mode 1)
 
 (add-hook 'prog-mode (lambda () (subword-mode 1)))
+
+(add-hook 'prog-mode-hook (lambda () (setq display-line-numbers 'relative)))
+
+(setq display-line-numbers 'relative)
+
 
 ;;; BUFFER-MODE
 (defun os/set-up-buffer-mode ()
@@ -127,6 +133,7 @@
 (setq-default indent-tabs-mode nil)
 (setq sentence-end-double-space nil)
 (setq tab-always-indent 'complete)
+(setq-default tab-width 2)
 
 (defvar modes-for-indentation-munging
   '(c++-mode

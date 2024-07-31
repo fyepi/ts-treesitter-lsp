@@ -3,12 +3,19 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        backward-sexp
         evil-next-line
         evil-normal-state
         evil-previous-line
+        kill-sexp
+        mark-sexp
+        sp-raise-sexp
+        whole-line-or-region-kill-ring-save
         ))
 
 (setq mc/cmds-to-run-once
       '(
         evil-change
+        lsp-ui-doc--handle-mouse-movement
+        npm-mode-npm-run
         ))

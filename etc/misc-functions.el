@@ -59,23 +59,6 @@ and sub-url to insert when building URL to file and line.")
 (defvar os/git-executable (executable-find "git")
   "Path to active `git' executable.")
 
-(defun os/browse-file-in-repo-website ()
-  "Open the web page for a file in a Git repository."
-  (interactive)
-  (let* (;; "gitea@git.genehack.net:os/emacs.git"
-         (remote (magit-git-string "remote" "get-url" "origin"))
-         ;; "main"
-         (branch (magit-get-current-branch))
-         ;; ("gitea" "git.genehack.net:os/emacs.git")
-         (parts (split-string remote "@"))
-         ;; "git.genehack.net:os/emacs.git" -> "git.genehack.net/os/emacs"
-         (base-url (replace-regexp-in-string ":" "/" (replace-regexp-in-string ".git$" "" (car (cdr parts)))))
-         (sub-url (alist-get (car parts) os/browse-file-in-repo-website-sub-url-lookup-map "" nil 'equal))
-         (file (file-relative-name buffer-file-name (projectile-project-root)))
-         (line (number-to-string (line-number-at-pos)))
-         (url (concat "https://" base-url sub-url "/" branch "/" file "#L" line)))
-    (browse-url url)))
-(bind-key "C-c C-l" #'os/browse-file-in-repo-website)
 
 (defun os/git-blame-for-line ()
   "Show git blame for current line."
