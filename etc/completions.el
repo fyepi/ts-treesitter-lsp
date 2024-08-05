@@ -302,26 +302,15 @@
   (lsp-metals-server-args
    '("-J-Dmetals.allow-multiline-string-formatting=off")))
 
-;; (use-package lsp-tailwindcss
-;;   :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
-;;   :init (setq lsp-tailwindcss-add-on-mode t)
-;;   :config
-;;   (setq lsp-tailwindcss-experimental-class-regex
-;;         [":class\\s+\"([^\"]*)\""
-;;          ":[\\w-.#>]+\\.([\\w-]*)"
-;;          "tw|yourModule\\(([^)]*)\\)"
-;;          "[\"'`]([^\"'`]*).*?[\"'`]"
-;;          ])
-;;   (dolist (tw-major-mode
-;;            '(css-mode
-;;              css-ts-mode
-;;              ;; typescript-mode
-;;              ;; typescript-ts-mode
-;;              ;; tsx-ts-mode
-;;              ;; js2-mode
-;;              ;; js-ts-mode
-;;              clojure-mode))
-;;     (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
+(use-package lsp-tailwindcss
+  :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
+  :init (setq lsp-tailwindcss-add-on-mode t)
+  :config
+  (setq lsp-tailwindcss-major-modes '(tsx-ts-mode css-ts-mode clojure-mode)
+        lsp-tailwindcss-rustywind-command nil
+        lsp-tailwindcss-validate nil
+        lsp-tailwindcss-code-actions nil
+        lsp-tailwindcss-class-attributes ["class" "className" "ngClass" ":class"]))
 
 (use-package lsp-ui
   :ensure t
@@ -341,10 +330,10 @@
   :demand t
   :after lsp-mode
   :config
+  ;; Use latest LSP from VSCode installed
   (setq lsp-eslint-server-command `("node"
                                     "/Users/ovistoica/.vscode/extensions/dbaeumer.vscode-eslint-3.0.10/server/out/eslintServer.js"
                                     "--stdio")))
-
 
 
 (use-package jarchive
@@ -485,7 +474,7 @@
   (setq copilot-enable-predicates nil)
   (add-to-list 'copilot-major-mode-alist '("tsx-ts" . "typescriptreact"))
   (add-to-list 'copilot-major-mode-alist '("typescript-ts" . "typescript"))
-  :hook (prog-mode . os/activate-copilot)
+  ;; :hook (prog-mode . os/activate-copilot)
   :bind (:map copilot-completion-map
               ("C-<tab>" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion)
