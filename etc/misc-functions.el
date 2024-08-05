@@ -204,7 +204,7 @@ If provided, ARG will be passed as a macro execution repeat count."
 
 ;;; PAREN-BOUNCE
 ;;;; originally ganked from <http://elfs.livejournal.com/1216037.html>
-(defun genehack/paren-bounce ()
+(defun os/paren-bounce ()
   "Bounce from one paren to the matching paren."
   (interactive)
   (let ((prev-char (char-to-string (preceding-char)))
@@ -212,8 +212,7 @@ If provided, ARG will be passed as a macro execution repeat count."
     (cond ((string-match "[[{(<\"']" next-char) (forward-sexp 1))
           ((string-match "[\]})>\"']" prev-char) (backward-sexp 1))
           (t (error "%s" "Not an expression boundary.")))))
-(bind-key "C-%" #'genehack/paren-bounce)
-(bind-key "C-5" #'genehack/paren-bounce)
+(bind-key "C-%" #'os/paren-bounce)
 
 
 ;;; URL ENCODING

@@ -39,7 +39,7 @@
 
 (add-hook 'prog-mode (lambda () (subword-mode 1)))
 
-(add-hook 'prog-mode-hook (lambda () (setq display-line-numbers 'relative)))
+(add-hook 'prog-mode (lambda () (setq display-line-numbers 'relative)))
 
 (setq display-line-numbers 'relative)
 
@@ -60,6 +60,14 @@
   (calendar-mode . os/set-up-calendar-mode)
   :custom
   (calendar-mark-holidays-flag t))
+
+(use-package prog-mode
+  :preface
+  (defun os/prog-mode-hook ()
+    (message "Running hook")
+    (setq display-line-numbers 'relative)
+    (subword-mode 1))
+  :hook (prog-mode . os/prog-mode-hook))
 
 
 ;;; CONVERT LINE ENDINGS
@@ -184,7 +192,7 @@ Ignores `ARG'."
 
 ;;; LINE NUMBERS
 (column-number-mode 1)
-(global-display-line-numbers-mode 1)
+(setq display-line-numbers 'relative)
 
 ;;; MAC STUFF
 (when (eq system-type 'darwin)

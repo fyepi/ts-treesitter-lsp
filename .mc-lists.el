@@ -4,12 +4,19 @@
 (setq mc/cmds-to-run-for-all
       '(
         backward-sexp
+        combobulate-envelop-tsx-ts-mode-wrap-parentheses
+        combobulate-envelop-typescript-ts-mode-wrap-parentheses
+        combobulate-maybe-insert-attribute
+        corfu-next
         evil-next-line
         evil-normal-state
         evil-previous-line
+        forward-sexp
+        genehack/paren-bounce
         kill-sexp
         mark-sexp
         sp-raise-sexp
+        sp-remove-active-pair-overlay
         whole-line-or-region-kill-ring-save
         ))
 
