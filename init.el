@@ -204,10 +204,10 @@ See 'use-package-normalize/:os/bind' for docs."
 ;;;; ease of use.
 (defvar os/module-list
   '(
-    "builtins"
-    "dired-config"
+                                        ;    "builtins"
+                                        ;    "dired-config"
     "straight"
-    "themes"
+                                        ;    "themes"
     "treesitter"
     "clojure"
     "completions"
@@ -215,7 +215,7 @@ See 'use-package-normalize/:os/bind' for docs."
     "linters"
     "misc-functions"
     "misc-packages"
-    "ai"
+                                        ;    "ai"
     "spelling"
     "3e"
     "dotenv-mode")

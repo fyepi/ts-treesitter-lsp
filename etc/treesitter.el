@@ -100,7 +100,7 @@
      (tsx-ts-mode . combobulate-mode))
     ;; Amend this to the directory where you keep Combobulate's source
     ;; code.
-    :load-path ("~/workspace/combobulate")))
+    :load-path ("~/.emacs.d/site-elisp/combobulate")))
 
 (provide 'treesitter)
 ;;; treesitter.el ends here
